@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OLA Energy Brand Transformation | A Pitch by Switch Communications</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables and Global Styles */
+        :root {
+            --ola-yellow: #FFD700;
+            --ola-green: #008080;
+            --switch-blue: #0A2E5E;
+            --dark-grey: #1a1a1a;
+            --light-grey: #f4f4f4;
+            --white: #ffffff;
+            --font-primary: 'Poppins', sans-serif;
+            --font-arabic: 'Cairo', sans-serif;
+            
+            /* Variables for Animated Cycle */
+            --step-delay: 1s;
+            --fade-in-duration: 0.6s;
+            --cycle-size: 500px;
+            --step-size: 120px;
+            --center-size: 160px;
+            --brand-color: #007bff;
+            --step-bg: orange; /* Color changed from gray to orange */
+            --text-color: white;
+            --brand-gradient: linear-gradient(135deg, #0061ff, #60efff);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-primary); color: var(--dark-grey); background-color: var(--white); line-height: 1.6; }
+
+        /* RTL (Arabic) Styles */
+        body.rtl { direction: rtl; font-family: var(--font-arabic); }
+        body.rtl h1, body.rtl h2, body.rtl h3, body.rtl p, body.rtl li, body.rtl a, body.rtl label, body.rtl button { font-family: var(--font-arabic); }
+        body.rtl .header { flex-direction: row-reverse; }
+        body.rtl h2, body.rtl h3, body.rtl .cycle-content h3, body.rtl .cycle-content .sub-title, body.rtl .cycle-content p { text-align: center; }
+        body.rtl .section-intro, body.rtl .value-prop-grid, body.rtl .cta { text-align: center; }
+        body.rtl .contact-form { text-align: right; }
+        body.rtl .geo-marketing-list li { padding: 1.5rem 3.5rem 1.5rem 1.5rem; }
+        body.rtl .geo-marketing-list li::before { right: 1.5rem; left: auto; }
+        body.rtl .after-image { border-left: 3px solid white; border-right: none; }
+
+
+        /* Utility Classes */
+        .container { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+        h1, h2, h3 { font-weight: 700; margin-bottom: 1rem; color: var(--switch-blue); }
+        h1 { font-size: 3.5rem; white-space: pre-line; }
+        h2 { font-size: 2.5rem; text-align: center; }
+        h3 { font-size: 1.5rem; }
+        p { margin-bottom: 1rem; color: #555; }
+        .section-intro { text-align: center; max-width: 800px; margin: 0 auto 3rem auto; }
+
+        /* Header */
+        .header { position: fixed; top: 0; left: 0; width: 100%; padding: 0.5rem 2rem; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-logos img { height: 60px; }
+        
+        /* Language Toggle */
+        .lang-toggle { background-color: var(--switch-blue); color: var(--white); border: none; padding: 0.6rem 1.2rem; border-radius: 20px; cursor: pointer; font-family: var(--font-primary); font-weight: 600; transition: background-color 0.3s; }
+        .lang-toggle:hover { background-color: #08244a; }
+
+
+        /* Hero Section */
+        .hero { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--white); overflow: hidden; }
+        .hero-background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://ik.imagekit.io/ko0ec3rfg/Ola/backheroimage.png') no-repeat center center/cover; animation: zoom-in-out 20s infinite alternate; z-index: -2; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 46, 94, 0.7); z-index: -1; }
+        @keyframes zoom-in-out { from { transform: scale(1); } to { transform: scale(1.1); } }
+        .hero-content { max-width: 900px; padding-top: 100px; }
+        @keyframes hero-headline-animation { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .hero-content h1 { color: var(--white); font-size: 4rem; opacity: 0; animation: hero-headline-animation 1.2s ease-out 0.5s forwards; }
+        .hero-content .tagline { font-size: 1.8rem; font-weight: 600; color: var(--ola-yellow); margin-top: 1rem; animation: fade-in 1.5s ease-in-out; }
+        @keyframes fade-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* --- BEFORE & AFTER SLIDER --- */
+        .before-after-container { position: relative; width: 100%; max-width: 800px; margin: 0 auto; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); aspect-ratio: 1 / 1; }
+        .before-after-container img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+        .before-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .after-image { position: absolute; top: 0; left: 0; width: 50%; height: 100%; overflow: hidden; border-right: 3px solid white; }
+        .slider-handle { position: absolute; top: 0; left: 50%; transform: translateX(-50%); height: 100%; width: 50px; cursor: ew-resize; display: flex; align-items: center; justify-content: center; }
+        .slider-handle-button { width: 40px; height: 40px; background-color: white; border-radius: 50%; color: var(--switch-blue); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; box-shadow: 0 0 10px rgba(0,0,0,0.3); pointer-events: none; }
+
+        /* General Slideshow Styles */
+        .slideshow-container { position: relative; width: 100%; overflow: hidden; border-radius: 5px; margin-bottom: 1rem; background-color: #eee; }
+        .slideshow-container .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease-in-out; }
+        .slideshow-container .slide.active { opacity: 1; }
+        
+        /* Geo-location & Strategic Proposal Marketing Section List Style */
+        .geo-marketing-list { list-style: none; padding: 0; max-width: 800px; margin: 2rem auto 0 auto; }
+        .geo-marketing-list li { background: var(--white); border-radius: 10px; padding: 1.5rem 1.5rem 1.5rem 3.5rem; margin-bottom: 1.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.07); position: relative; transition: transform 0.3s, box-shadow 0.3s; text-align: left; }
+        .geo-marketing-list li:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .geo-marketing-list li::before { content: '✓'; position: absolute; left: 1.5rem; top: 50%; transform: translateY(-50%); font-size: 1.5rem; font-weight: 700; color: var(--ola-green); }
+        .geo-marketing-list li strong { display: block; font-size: 1.1rem; color: var(--switch-blue); margin-bottom: 0.25rem; }
+
+        /* Smart Graph Image Container */
+        .smart-graph-container { max-width: 600px; margin: 4rem auto 0 auto; text-align: center; }
+        .smart-graph-container img { max-width: 100%; height: auto; }
+        
+        .value-prop { background-color: var(--switch-blue); }
+        .value-prop h2 { color: var(--white); }
+        .value-prop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; color: var(--white); text-align: center; }
+        .value-item { background-color: rgba(255,255,255, 0.1); padding: 1.5rem; border-radius: 10px; }
+        .value-item h3 { color: var(--ola-yellow); }
+        .value-item p { color: #ccc; }
+
+        .strategic-proposal, .activation-overview { background-color: var(--light-grey); }
+        .cycle-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; margin-top: 3rem; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .cycle-card { background: var(--white); border-radius: 15px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .cycle-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .cycle-image { margin-bottom: 1.5rem; border-radius: 10px; overflow: hidden; background: #f8f9fa; }
+        .cycle-image img { width: 100%; height: auto; display: block; transition: transform 0.3s ease; }
+        .cycle-card:hover .cycle-image img { transform: scale(1.02); }
+        .cycle-content h3 { color: var(--switch-blue); font-size: 1.4rem; margin-bottom: 0.5rem; text-align: center; }
+        .cycle-content .sub-title { font-weight: 600; color: var(--ola-green); font-size: 1.1rem; text-align: center; margin-bottom: 1rem; }
+        .cycle-content p { color: #666; line-height: 1.7; text-align: center; font-size: 1rem; }
+
+        /* Styles for the new animated cycle */
+        .cycle-container-wrapper { display: flex; justify-content: center; align-items: center; min-height: 60vh; background-color: var(--light-grey); overflow: hidden; }
+        .cycle-container { position: relative; width: var(--cycle-size); height: var(--cycle-size); margin: 40px; }
+        .center-core { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: var(--center-size); height: var(--center-size); background: var(--brand-gradient); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; text-align: center; font-size: 22px; font-weight: 600; z-index: 10; box-shadow: 0 10px 30px rgba(0, 97, 255, 0.2); opacity: 0; animation: fadeInStep var(--fade-in-duration) ease-out forwards; }
+        .cycle-step { position: absolute; width: var(--step-size); height: var(--step-size); background-color: var(--step-bg); border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 10px; font-size: 13px; color: var(--text-color); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); z-index: 5; opacity: 0; transform: translate(-50%, -50%) scale(0.8); animation: fadeInStep var(--fade-in-duration) ease-out forwards; }
+        .cycle-step b { font-size: 18px; color: var(--brand-color); margin-bottom: 5px; }
+        .step-1 { animation-delay: calc(var(--step-delay) * 1); }
+        .step-2 { animation-delay: calc(var(--step-delay) * 2); }
+        .step-3 { animation-delay: calc(var(--step-delay) * 3); }
+        .step-4 { animation-delay: calc(var(--step-delay) * 4); }
+        .step-5 { animation-delay: calc(var(--step-delay) * 5); }
+        .step-6 { animation-delay: calc(var(--step-delay) * 6); }
+        .step-7 { animation-delay: calc(var(--step-delay) * 7); }
+        .step-8 { animation-delay: calc(var(--step-delay) * 8); }
+        .step-9 { animation-delay: calc(var(--step-delay) * 9); }
+        @keyframes fadeInStep { from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+        
+        .cta { text-align: center; }
+        .contact-form { max-width: 600px; margin: 2rem auto 0 auto; text-align: left; }
+        .contact-form label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+        .contact-form input, .contact-form textarea { width: 100%; padding: 0.8rem; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 5px; font-family: var(--font-primary); font-size: 1rem; }
+        .contact-form button { display: inline-block; width: 100%; background: var(--ola-yellow); color: var(--dark-grey); padding: 1rem 3rem; font-size: 1.2rem; font-weight: 700; text-decoration: none; border-radius: 50px; transition: transform 0.3s, background-color 0.3s; border: none; cursor: pointer; }
+        .contact-form button:hover { background-color: #ffc400; transform: scale(1.02); }
+        
+        .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+        
+        @media (max-width: 900px) {
+            h1 { font-size: 2.5rem; }
+            .hero-content h1 { font-size: 3rem; }
+            h2 { font-size: 2rem; }
+        }
+        @media (max-width: 600px) {
+            .container { padding: 3rem 1rem; }
+            h1 { font-size: 2rem; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .hero-content .tagline { font-size: 1.3rem; }
+            .header { padding: 0.5rem 1rem; flex-wrap: wrap; justify-content: center; }
+            .header-logos img { height: 45px; }
+            .hero-content { padding-top: 120px; }
+
+            /* Responsive styles for animated cycle */
+            :root {
+                --cycle-size: 90vw;
+                --step-size: 100px;
+                --center-size: 130px;
+            }
+            .center-core { font-size: 18px; }
+            .cycle-step { font-size: 11px; }
+            .cycle-step b { font-size: 16px; }
+        }
+    </style>
+</head>
+<body data-lang="en">
+
+    <header class="header">
+        <div class="header-logos">
+            <img src="https://ik.imagekit.io/ko0ec3rfg/Ola/Ola%20generated%20images/Switch%20Communications%20new%20Logo.png" alt="Switch Communications Logo">
+        </div>
+        <button class="lang-toggle" id="lang-toggle-btn">العربية</button>
+        <div class="header-logos">
+             <img src="https://ik.imagekit.io/ko0ec3rfg/Ola%20TR%20Logo.png?updatedAt=1753689383670" alt="Ola Energy Logo">
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-background"></div>
+            <div class="hero-content">
+                <h1 data-lang-en="from only fuel station to a Destination.." data-lang-ar="من مجرد محطة وقود إلى وجهة متكاملة..">from only fuel station to a Destination..</h1>
+                <p class="tagline" data-lang-en="From Just Fuel… to a Brand to Talk About." data-lang-ar="من مجرد وقود… إلى علامة تجارية تستحق الحديث عنها.">From Just Fuel… to a Brand to Talk About.</p>
+            </div>
+        </section>
+
+        <section class="challenge-objective">
+            <div class="container">
+                <div class="section-intro animate-on-scroll">
+                    <h2 data-lang-en="The Core Objective" data-lang-ar="الهدف الأساسي">The Core Objective</h2>
+                    
+                    <h3 data-lang-en="For Better Oil ROI" data-lang-ar="لتحسين عائد استثمار الزيوت" style="font-size: 1.2rem; margin-top: 2rem; color: var(--ola-green);">For Better Oil ROI</h3>
+                    <ul class="geo-marketing-list" style="max-width: 700px; margin-top: 1.5rem;">
+                        <li data-lang-en="The existing OLA infrastructure and networking is a powerful asset." data-lang-ar="البنية التحتية وشبكة OLA الحالية هي أصل قوي.">The existing OLA infrastructure and networking is a powerful asset.</li>
+                        <li data-lang-en="challenges in consumer perception, footfall, and brand loyalty." data-lang-ar="تحديات في تصور المستهلك، عدد الزوار، والولاء للعلامة التجارية.">challenges in consumer perception, footfall, and brand loyalty.</li>
+                    </ul>
+
+                    <h3 data-lang-en="Objectives" data-lang-ar="الأهداف" style="font-size: 1.2rem; margin-top: 2rem; color: var(--ola-green);">Objectives</h3>
+                    <ul class="geo-marketing-list" style="max-width: 700px; margin-top: 1.5rem;">
+                        <li data-lang-en="Raising Oil ROI" data-lang-ar="زيادة عائد استثمار الزيوت">Raising Oil ROI</li>
+                        <li data-lang-en="Transitioning OLA Energy to lifestyle destination" data-lang-ar="تحويل OLA Energy إلى وجهة عصرية">Transitioning OLA Energy to lifestyle destination</li>
+                        <li data-lang-en="starting with high-visibility stations." data-lang-ar="البدء بالمحطات ذات الظهور العالي.">starting with high-visibility stations.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="transformation-showcase">
+            <div class="container">
+                <div class="section-intro animate-on-scroll">
+                    <h2 data-lang-en="Visualizing the Transformation" data-lang-ar="تصوّر التحول">Visualizing the Transformation</h2>
+                    <p data-lang-en="From a standard stop to a vibrant destination. Drag the slider to see the potential." data-lang-ar="من محطة عادية إلى وجهة نابضة بالحياة. اسحب المؤشر لرؤية الإمكانيات.">From a standard stop to a vibrant destination. Drag the slider to see the potential.</p>
+                </div>
+                
+                <div class="before-after-container animate-on-scroll" id="before-after">
+                    <div class="before-image">
+                        <img src="https://ik.imagekit.io/ko0ec3rfg/Ola/Ola%20-%20Before.jpg" alt="Standard OLA Fuel Station Before Transformation">
+                    </div>
+                    <div class="after-image" id="after-image">
+                        <img src="https://ik.imagekit.io/ko0ec3rfg/Ola/d0b637d4-5940-4f2a-b942-5e1e6eec356d.jpg?updatedAt=1753694094824" alt="Vibrant OLA Destination After Transformation">
+                    </div>
+                    <div class="slider-handle" id="slider-handle">
+                       <div class="slider-handle-button">↔</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="strategic-proposal">
+            <div class="container">
+                <div class="section-intro animate-on-scroll">
+                    <h2 data-lang-en="Strategic Marketing Proposal" data-lang-ar="مقترح التسويق الاستراتيجي">Strategic Marketing Proposal</h2>
+                    <ul class="geo-marketing-list">
+                        <li data-lang-en="Creating oil & gas customer loyalty through our B2B strategy." data-lang-ar="بناء ولاء عملاء النفط والغاز من خلال استراتيجيتنا للأعمال (B2B).">Creating oil & gas customer loyalty through our B2B strategy.</li>
+                        <li data-lang-en="Aligned with our B2C strategy to promote oil revenue." data-lang-ar="متوافقة مع استراتيجيتنا للمستهلك (B2C) لتعزيز إيرادات قطاع الزيوت.">Aligned with our B2C strategy to promote oil revenue.</li>
+                    </ul>
+                </div>
+
+                <!-- NEW ANIMATED CYCLE EMBEDDED HERE -->
+                <div class="cycle-container-wrapper animate-on-scroll">
+                    <div class="cycle-container" id="cycle-container">
+                        <div class="center-core">Gaining Oil ROI</div>
+                        <!-- Cycle Steps will be generated by JavaScript -->
+                    </div>
+                </div>
+                <!-- PREVIOUS SECTION REMOVED AS REQUESTED -->
+
+            </div>
+        </section>
+
+        <section class="destination-strategy" style="background-color: var(--light-grey);">
+            <div class="container">
+                <div class="section-intro animate-on-scroll">
+                    <h2 data-lang-en="Geo-location Marketing" data-lang-ar="التسويق عبر المواقع الجغرافية">Geo-location Marketing</h2>
+                </div>
+                <ul class="geo-marketing-list animate-on-scroll">
+                    <li>
+                        <strong data-lang-en="Objective:" data-lang-ar="الهدف:">Objective:</strong>
+                        <span data-lang-en="Drive customer traffic and promote Ola oil products." data-lang-ar="زيادة حركة العملاء والترويج لمنتجات زيوت OLA.">Drive customer traffic and promote Ola oil products.</span>
+                    </li>
+                    <li>
+                        <strong data-lang-en="Execution:" data-lang-ar="التنفيذ:">Execution:</strong>
+                         <span data-lang-en="Switch Communications will conduct an on-site marketing campaign and roadshow." data-lang-ar="ستقوم سويتش كوميونيكيشنز بتنظيم حملة تسويقية ميدانية وعروض متنقلة.">Switch Communications will conduct an on-site marketing campaign and roadshow.</span>
+                    </li>
+                    <li>
+                        <strong data-lang-en="Location:" data-lang-ar="الموقع:">Location:</strong>
+                        <span data-lang-en="Ola Energy gas stations." data-lang-ar="محطات وقود أولا إنرجي.">Ola Energy gas stations.</span>
+                    </li>
+                    <li>
+                        <strong data-lang-en="Method:" data-lang-ar="الأسلوب:">Method:</strong>
+                        <span data-lang-en="Distribution of giveaways and direct customer engagement though out gas station roadshow carnival." data-lang-ar="توزيع الهدايا والتفاعل المباشر مع العملاء من خلال كرنفال العروض المتنقلة في محطات الوقود.">Distribution of giveaways and direct customer engagement though out gas station roadshow carnival.</span>
+                    </li>
+                </ul>
+                <div class="smart-graph-container animate-on-scroll">
+                    <img src="https://ik.imagekit.io/ko0ec3rfg/Ola/B2C%20Ola's%20Cycle%20.png" alt="5-Step Activation Plan: Audit, Remodel, Launch, Conduct, Digital PR" loading="lazy">
+                </div>
+            </div>
+        </section>
+        
+        <section class="activation-overview">
+            <div class="container">
+                <div class="section-intro animate-on-scroll">
+                    <h2 data-lang-en="Activation Overview" data-lang-ar="نظرة عامة على التفعيل">Activation Overview</h2>
+                </div>
+                <div class="slideshow-container animate-on-scroll" id="overview-slideshow" style="max-width: 900px; margin: auto; height: 500px;">
+                    <img src="https://ik.imagekit.io/ko0ec3rfg/Ola/re-launching%20Ola-%20midtop?updatedAt=1753580713464" alt="Activation Mockup 1" class="slide active">
+                    <img src="https://ik.imagekit.io/ko0ec3rfg/Ola/Live%20Event%20Zone%20Mockup.png?updatedAt=1753573579181" alt="Activation Mockup 2" class="slide">
+                    <img src="https://ik.imagekit.io/ko0ec3rfg/Ola/Digital%20Loyalty%20Zone%20Mockup%20spin%20&%20win.png?updatedAt=1753573313446" alt="Activation Mockup 3" class="slide">
+                    <img src="https://ik.imagekit.io/ko0ec3rfg/Ola/Hotdog%20Booth%20Mockup.png?updatedAt=1753573713676" alt="Activation Mockup 4" class="slide">
+                </div>
+
+                <div class="b2b-card-container animate-on-scroll" style="max-width: 800px; margin: 3rem auto 0 auto;">
+                     <div class="cycle-card">
+                        <div class="cycle-image">
+                            <img src="https://ik.imagekit.io/ko0ec3rfg/Ola/B2B.png?updatedAt=1753611118193" alt="B2B Strategic Cycle Chart" loading="lazy">
+                        </div>
+                        <div class="cycle-content">
+                            <h3 data-lang-en="Ola Energy: B2B Partnership Strategy" data-lang-ar="أولا إنرجي: استراتيجية شراكات الأعمال (B2B)">Ola Energy: B2B Partnership Strategy</h3>
+                            <p class="sub-title" data-lang-en="Building Strategic Alliances for Growth" data-lang-ar="بناء تحالفات استراتيجية للنمو">Building Strategic Alliances for Growth</p>
+                            <p data-lang-en="Expanding our oil market share requires cultivating robust B2B alliances through tailored engagement, ensuring our partners recognize and champion Ola Energy's value." data-lang-ar="يتطلب توسيع حصتنا في سوق الزيوت بناء تحالفات قوية في قطاع الأعمال (B2B) من خلال تواصل مخصص، مما يضمن أن شركاءنا يقدرون ويدعمون قيمة أولا إنرجي.">Expanding our oil market share requires cultivating robust B2B alliances through tailored engagement, ensuring our partners recognize and champion Ola Energy's value.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="value-prop">
+            <div class="container">
+                <div class="section-intro animate-on-scroll">
+                    <h2 data-lang-en="Why Store Activation Drives Transformation" data-lang-ar="لماذا يقود تفعيل المحطات هذا التحول">Why Store Activation Drives Transformation</h2>
+                </div>
+                <div class="value-prop-grid">
+                    <div class="value-item animate-on-scroll">
+                        <h3 data-lang-en="Emotional Connection" data-lang-ar="ارتباط عاطفي">Emotional Connection</h3>
+                        <p data-lang-en="Builds strong emotional bonds with the OLA brand beyond the transaction." data-lang-ar="بناء روابط عاطفية قوية مع علامة OLA التجارية تتجاوز مجرد المعاملات.">Builds strong emotional bonds with the OLA brand beyond the transaction.</p>
+                    </div>
+                    <div class="value-item animate-on-scroll">
+                        <h3 data-lang-en="Word-of-Mouth" data-lang-ar="التسويق الشفهي">Word-of-Mouth</h3>
+                        <p data-lang-en="Encourages customers to talk about OLA for its experiences, not just its fuel." data-lang-ar="تشجيع العملاء على الحديث عن OLA بسبب تجاربها المميزة، وليس فقط بسبب الوقود.">Encourages customers to talk about OLA for its experiences, not just its fuel.</p>
+                    </div>
+                    <div class="value-item animate-on-scroll">
+                        <h3 data-lang-en="Repeat Behavior" data-lang-ar="تكرار الزيارة">Repeat Behavior</h3>
+                        <p data-lang-en="Drives loyalty through curiosity, engagement, and rewarding experiences." data-lang-ar="تعزيز الولاء من خلال إثارة الفضول والمشاركة وتقديم تجارب مجزية.">Drives loyalty through curiosity, engagement, and rewarding experiences.</p>
+                    </div>
+                    <div class="value-item animate-on-scroll">
+                        <h3 data-lang-en="Market Leadership" data-lang-ar="ريادة السوق">Market Leadership</h3>
+                        <p data-lang-en="Positions OLA to lead in the digital loyalty space where no dominant player exists." data-lang-ar="وضع OLA في صدارة مجال الولاء الرقمي حيث لا يوجد منافس مهيمن حاليًا.">Positions OLA to lead in the digital loyalty space where no dominant player exists.</p>
+                    </div>
+                    <div class="value-item animate-on-scroll">
+                        <h3 data-lang-en="Future-Proofing" data-lang-ar="ضمان المستقبل">Future-Proofing</h3>
+                        <p data-lang-en="Builds loyalty through experience, not just price, to secure future growth." data-lang-ar="بناء الولاء من خلال التجربة، وليس السعر فقط، لضمان النمو المستقبلي.">Builds loyalty through experience, not just price, to secure future growth.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta" id="cta-section">
+            <div class="container animate-on-scroll">
+                <h2 data-lang-en="Let's Start the Conversation." data-lang-ar="لنبدأ الحوار.">Let's Start the Conversation.</h2>
+                <p data-lang-en="We are confident that by "switching the perspective," we can transform OLA Energy into a brand that Egyptians not only need but love. <br>Send us a message to discuss how we can bring these activations to life." data-lang-ar="نحن واثقون من أنه من خلال "تغيير المنظور"، يمكننا تحويل OLA Energy إلى علامة تجارية لا يحتاجها المصريون فحسب، بل يحبونها أيضاً. <br>أرسل لنا رسالة لمناقشة كيفية تحقيق هذه التفعيلات على أرض الواقع.">We are confident that by "switching the perspective," we can transform OLA Energy into a brand that Egyptians not only need but love. <br>Send us a message to discuss how we can bring these activations to life.</p>
+                <form class="contact-form" id="contact-form" action="https://formspree.io/f/xvgqankd" method="POST">
+                    <label for="name" data-lang-en="Your Name:" data-lang-ar="اسمك:">Your Name:</label><input type="text" id="name" name="name" required>
+                    <label for="email" data-lang-en="Your Email:" data-lang-ar="بريدك الإلكتروني:">Your Email:</label><input type="email" id="email" name="email" required>
+                    <label for="message" data-lang-en="Your Message:" data-lang-ar="رسالتك:">Your Message:</label><textarea id="message" name="message" rows="5" required></textarea>
+                    <button type="submit" id="submit-btn" data-lang-en="Send Message" data-lang-ar="إرسال الرسالة">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Language Toggle Logic ---
+            const langToggleButton = document.getElementById('lang-toggle-btn');
+            const body = document.body;
+            langToggleButton.addEventListener('click', () => {
+                const currentLang = body.getAttribute('data-lang');
+                const newLang = currentLang === 'en' ? 'ar' : 'en';
+                body.setAttribute('data-lang', newLang);
+                body.classList.toggle('rtl', newLang === 'ar');
+                langToggleButton.textContent = newLang === 'en' ? 'العربية' : 'English';
+                document.querySelectorAll('[data-lang-en]').forEach(el => {
+                    el.innerHTML = el.getAttribute(`data-lang-${newLang}`);
+                });
+            });
+
+            // --- Slideshow Logic ---
+            const slideshows = document.querySelectorAll('.slideshow-container');
+            slideshows.forEach((slideshow, index) => {
+                const slides = slideshow.querySelectorAll('.slide');
+                if (slides.length > 0) {
+                    let currentSlide = 0;
+                    slides.forEach(slide => slide.classList.remove('active'));
+                    slides[currentSlide].classList.add('active');
+                    if (slides.length > 1) {
+                        setInterval(() => {
+                            slides[currentSlide].classList.remove('active');
+                            currentSlide = (currentSlide + 1) % slides.length;
+                            slides[currentSlide].classList.add('active');
+                        }, 3500 + (index * 500));
+                    }
+                }
+            });
+
+            // --- Animate on Scroll Logic ---
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            animatedElements.forEach(el => observer.observe(el));
+            
+            // --- Before and After Slider Logic ---
+            const sliderContainer = document.getElementById('before-after');
+            if (sliderContainer) {
+                const afterImage = document.getElementById('after-image');
+                const handle = document.getElementById('slider-handle');
+                let isDragging = false;
+                const startDragging = (e) => { isDragging = true; e.preventDefault(); };
+                const stopDragging = () => { isDragging = false; };
+                const onDrag = (e) => {
+                    if (!isDragging) return;
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const rect = sliderContainer.getBoundingClientRect();
+                    let offsetX = clientX - rect.left;
+                    if (offsetX < 0) offsetX = 0;
+                    if (offsetX > rect.width) offsetX = rect.width;
+                    const percentage = (offsetX / rect.width) * 100;
+                    handle.style.left = `${percentage}%`;
+                    afterImage.style.width = `${percentage}%`;
+                };
+                handle.addEventListener('mousedown', startDragging);
+                document.addEventListener('mouseup', stopDragging);
+                document.addEventListener('mousemove', onDrag);
+                handle.addEventListener('touchstart', startDragging);
+                document.addEventListener('touchend', stopDragging);
+                document.addEventListener('touchmove', onDrag);
+            }
+            
+            // --- NEW: Animated Business Cycle Logic ---
+            const cycleContainer = document.getElementById('cycle-container');
+            if (cycleContainer) {
+                const stepsData = [
+                    "Car Manufacturer Loyalty", "Raising ola brand image", "Changing Customer experience",
+                    "gas station customer perception", "Auditing and Mistry shopping program", "marketing A branding efforts",
+                    "Consumer word-of-mouse", "Gas station Traffic", "Car manufactures trust"
+                ];
+                const numSteps = stepsData.length;
+                setTimeout(() => {
+                    const containerRadius = cycleContainer.offsetWidth / 2;
+                    if (containerRadius > 0) {
+                        stepsData.forEach((text, i) => {
+                            const stepDiv = document.createElement('div');
+                            stepDiv.classList.add('cycle-step', `step-${i + 1}`);
+                            stepDiv.innerHTML = `<b>${i + 1}</b>${text}`;
+                            cycleContainer.appendChild(stepDiv);
+                            const angle = (i / numSteps) * 2 * Math.PI;
+                            const x = containerRadius + containerRadius * Math.cos(angle - Math.PI / 2);
+                            const y = containerRadius + containerRadius * Math.sin(angle - Math.PI / 2);
+                            stepDiv.style.left = `${x}px`;
+                            stepDiv.style.top = `${y}px`;
+                        });
+                    }
+                }, 100);
+            }
+
+
+            // --- Form Submission Logic ---
+            const form = document.getElementById('contact-form');
+            if(form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const submitBtn = document.getElementById('submit-btn');
+                    submitBtn.disabled = true;
+                    const currentLang = document.body.getAttribute('data-lang') || 'en';
+                    submitBtn.textContent = currentLang === 'ar' ? 'جار الإرسال...' : 'Sending...';
+                    const formData = new FormData(form);
+                    try {
+                        const response = await fetch(form.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
+                        if (response.ok) {
+                            alert(currentLang === 'ar' ? 'شكراً لرسالتك! سوف نعود إليك قريبا.' : 'Thank you for your message! We will get back to you soon.');
+                            form.reset();
+                        } else { throw new Error('Network response was not ok'); }
+                    } catch (error) {
+                        alert(currentLang === 'ar' ? 'عذراً، حدث خطأ أثناء إرسال رسالتك. الرجاء معاودة المحاولة.' : 'Sorry, there was an error sending your message. Please try again.');
+                        console.error('Form submission error:', error);
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = submitBtn.getAttribute(`data-lang-${currentLang}`);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

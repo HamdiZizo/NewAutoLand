@@ -1,0 +1,126 @@
+{
+  "title": "OLA Energy - From Fuel Station to Destination",
+  "description": "A transformation strategy for OLA Energy stations",
+  "config": {
+    "meta": {
+      "title": "OLA Energy - Transformation Strategy",
+      "description": "From only a fuel station to a destination: A transformation strategy for OLA Energy",
+      "language": "en",
+      "direction": "ltr"
+    },
+    "brand": {
+      "name": "OLA Energy",
+      "logo": "https://ik.imagekit.io/ko0ec3rfg/Ola%20TR%20Logo.png?updatedAt=1753689383670",
+      "primaryColor": "#FF6700",
+      "secondaryColor": "#003366",
+      "textColor": "#333333",
+      "backgroundColor": "#FFFFFF",
+      "fontFamily": "Poppins, sans-serif"
+    },
+    "sections": [
+      {
+        "type": "hero",
+        "id": "hero",
+        "title": "From only a fuel station to a Destination...",
+        "subtitle": "From Just Fuel… to a Brand to Talk About.",
+        "image": "https://ik.imagekit.io/ko0ec3rfg/Ola/backheroimage.png",
+        "style": {
+          "backgroundPosition": "center center",
+          "backgroundSize": "cover"
+        }
+      },
+      {
+        "type": "features",
+        "id": "objectives",
+        "title": "The Core Objective",
+        "subtitle": "For Better Oil ROI",
+        "items": [
+          {
+            "title": "Powerful Asset",
+            "description": "The existing OLA infrastructure and networking is a powerful asset."
+          },
+          {
+            "title": "Key Challenges",
+            "description": "Addressing challenges in consumer perception, footfall, and brand loyalty."
+          },
+          {
+            "title": "Raising Oil ROI",
+            "description": "Implementing strategies to increase return on investment for oil products."
+          },
+          {
+            "title": "Lifestyle Destination",
+            "description": "Transitioning OLA Energy stations to lifestyle destinations."
+          }
+        ]
+      },
+      {
+        "type": "before-after",
+        "id": "transformation",
+        "title": "Visualizing the Transformation",
+        "subtitle": "From a standard stop to a vibrant destination. Drag the slider to see the potential.",
+        "items": [
+          { 
+            "image": "https://ik.imagekit.io/ko0ec3rfg/Ola/Ola%20-%20Before.jpg"
+          },
+          { 
+            "image": "https://ik.imagekit.io/ko0ec3rfg/Ola/d0b637d4-5940-4f2a-b942-5e1e6eec356d.jpg?updatedAt=1753694094824"
+          }
+        ]
+      },
+      {
+        "type": "cards",
+        "id": "strategy",
+        "title": "Strategic Approach",
+        "subtitle": "Our comprehensive strategy for OLA Energy transformation",
+        "items": [
+          {
+            "title": "B2B Strategy",
+            "description": "Creating unshakeable oil & gas customer loyalty through high-value corporate partnerships and fleet programs."
+          },
+          {
+            "title": "B2C Strategy",
+            "description": "Transforming the customer experience at every station to directly promote oil revenue and in-store sales."
+          },
+          {
+            "title": "Geo-location Marketing",
+            "description": "Using location-based marketing to drive customer traffic and promote Ola oil products at specific stations."
+          },
+          {
+            "title": "Digital Integration",
+            "description": "Implementing digital loyalty programs and interactive experiences to engage the modern consumer."
+          }
+        ],
+        "style": {
+          "backgroundColor": "#f8f9fa"
+        }
+      },
+      {
+        "type": "custom",
+        "id": "customer-journey",
+        "title": "The Customer Journey",
+        "subtitle": "A cycle of engagement that drives loyalty and repeat business",
+        "content": "<div style='max-width: 700px; margin: 0 auto; text-align: center;'><img src='/images/CustomerJourney.jpg' alt='Customer Journey Cycle' style='max-width: 100%; border-radius: 8px;'><p style='margin-top: 20px; font-style: italic;'>Our comprehensive approach addresses every touchpoint in the customer journey to build brand loyalty and increase oil revenue.</p></div>"
+      },
+      {
+        "type": "contact",
+        "id": "contact",
+        "title": "Let's Start the Conversation",
+        "subtitle": "We are confident that by "switching the perspective," we can transform OLA Energy into a brand that customers not only need but love."
+      }
+    ],
+    "footer": {
+      "text": "© 2025 Switch Communications. All rights reserved.",
+      "links": [
+        { "text": "Privacy Policy", "url": "#" },
+        { "text": "Terms of Service", "url": "#" }
+      ]
+    },
+    "multilingual": {
+      "enabled": true,
+      "languages": [
+        { "code": "en", "name": "English", "isRTL": false },
+        { "code": "ar", "name": "Arabic", "isRTL": true }
+      ]
+    }
+  }
+}

@@ -1,0 +1,407 @@
+---
+import LandingPageTemplate from '../../components/LandingPageTemplate.astro';
+
+// This will be replaced with server-side logic or database call
+// For now, we'll use mock data for demonstration
+const { slug } = Astro.params;
+
+// Default config if no specific config is found
+const defaultConfig = {
+  meta: {
+    title: "Demo Landing Page",
+    description: "A demo landing page created with our template system",
+    language: "en",
+    direction: "ltr"
+  },
+  brand: {
+    name: "Demo Brand",
+    logo: "https://via.placeholder.com/150x50?text=Logo",
+    primaryColor: "#007BFF",
+    secondaryColor: "#6C757D",
+    textColor: "#333333",
+    backgroundColor: "#FFFFFF",
+    fontFamily: "Poppins, sans-serif"
+  },
+  sections: [
+    {
+      type: "hero",
+      id: "hero",
+      title: "Welcome to Our Landing Page Generator",
+      subtitle: "Create professional landing pages in minutes with our template system",
+      image: "https://via.placeholder.com/1200x600?text=Hero+Background",
+      content: "<p>This is a sample hero section content. Replace this with your actual content.</p><a href='#features' class='btn'>Learn More</a>"
+    },
+    {
+      type: "cards",
+      id: "features",
+      title: "Key Features",
+      subtitle: "What makes our template system special",
+      items: [
+        {
+          title: "Easy to Use",
+          description: "Create professional landing pages without coding knowledge"
+        },
+        {
+          title: "Customizable",
+          description: "Personalize every aspect to match your brand identity"
+        },
+        {
+          title: "Responsive",
+          description: "Looks great on every device from desktop to mobile"
+        }
+      ]
+    },
+    {
+      type: "before-after",
+      id: "comparison",
+      title: "See the Difference",
+      subtitle: "Compare before and after using our template system",
+      items: [
+        { image: "https://via.placeholder.com/800x500?text=Before" },
+        { image: "https://via.placeholder.com/800x500?text=After" }
+      ]
+    },
+    {
+      type: "contact",
+      id: "contact",
+      title: "Get In Touch",
+      subtitle: "Have questions? Contact us!"
+    }
+  ],
+  footer: {
+    text: `© ${new Date().getFullYear()} Demo Brand. All rights reserved.`,
+    links: [
+      { text: "Privacy Policy", url: "#" },
+      { text: "Terms of Service", url: "#" }
+    ]
+  }
+};
+
+// In a real app, you would fetch this from a database
+// For now, we use client-side script to inject configuration from localStorage
+---
+
+<script define:vars={{ slug }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Try to get the saved configuration from localStorage
+    const savedConfig = localStorage.getItem(`landingConfig_${slug}`);
+    
+    if (savedConfig) {
+      // Create a custom event to pass the configuration
+      const event = new CustomEvent('configLoaded', {
+        detail: { config: JSON.parse(savedConfig) }
+      });
+      
+      // Dispatch the event
+      document.dispatchEvent(event);
+    }
+  });
+</script>
+
+<LandingPageTemplate config={defaultConfig} />
+
+<script>
+  // Listen for the configLoaded event
+  document.addEventListener('configLoaded', (event) => {
+    const config = event.detail.config;
+    
+    // Update the page with the loaded configuration
+    if (config.meta) {
+      document.title = config.meta.title;
+      document.documentElement.lang = config.meta.language;
+      document.documentElement.dir = config.meta.direction || 'ltr';
+      
+      // Update meta description
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', config.meta.description);
+    }
+    
+    // Update brand elements
+    if (config.brand) {
+      const root = document.documentElement;
+      root.style.setProperty('--primary-color', config.brand.primaryColor);
+      root.style.setProperty('--secondary-color', config.brand.secondaryColor);
+      root.style.setProperty('--text-color', config.brand.textColor);
+      root.style.setProperty('--bg-color', config.brand.backgroundColor);
+      root.style.setProperty('--font-family', config.brand.fontFamily);
+      
+      // Update logo
+      const logoImg = document.querySelector('.header-logo img');
+      if (logoImg) logoImg.src = config.brand.logo;
+    }
+    
+    // Update sections content
+    if (config.sections && config.sections.length > 0) {
+      const main = document.querySelector('main');
+      if (main) {
+        // Clear existing content
+        main.innerHTML = '';
+        
+        // Create sections based on config
+        config.sections.forEach(section => {
+          const sectionElem = createSection(section);
+          if (sectionElem) main.appendChild(sectionElem);
+        });
+        
+        // Reapply animations
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        animatedElements.forEach(el => observer.observe(el));
+      }
+    }
+    
+    // Update footer
+    if (config.footer) {
+      const footerText = document.querySelector('footer p');
+      if (footerText) footerText.textContent = config.footer.text;
+      
+      // Update footer links if any
+      if (config.footer.links && config.footer.links.length > 0) {
+        const footerLinks = document.querySelector('.footer-links');
+        if (footerLinks) {
+          footerLinks.innerHTML = '';
+          config.footer.links.forEach(link => {
+            const linkElem = document.createElement('a');
+            linkElem.href = link.url;
+            linkElem.textContent = link.text;
+            linkElem.target = '_blank';
+            linkElem.rel = 'noopener';
+            footerLinks.appendChild(linkElem);
+          });
+        }
+      }
+    }
+  });
+  
+  // Helper function to create a section based on type
+  function createSection(section) {
+    const sectionElem = document.createElement('section');
+    sectionElem.id = section.id;
+    sectionElem.className = `section ${section.type}`;
+    
+    // Apply background styles if provided
+    if (section.style) {
+      Object.entries(section.style).forEach(([key, value]) => {
+        sectionElem.style[key] = value;
+      });
+    }
+    
+    // Common elements for all section types
+    const container = document.createElement('div');
+    container.className = 'container';
+    
+    // Create section intro if title or subtitle exists
+    if (section.title || section.subtitle) {
+      const intro = document.createElement('div');
+      intro.className = 'section-intro animate-on-scroll';
+      
+      if (section.title) {
+        const title = document.createElement('h2');
+        title.textContent = section.title;
+        intro.appendChild(title);
+      }
+      
+      if (section.subtitle) {
+        const subtitle = document.createElement('p');
+        subtitle.textContent = section.subtitle;
+        intro.appendChild(subtitle);
+      }
+      
+      container.appendChild(intro);
+    }
+    
+    // Type-specific content
+    switch(section.type) {
+      case 'hero':
+        sectionElem.className = 'hero';
+        
+        // Add background image if provided
+        if (section.image) {
+          const bg = document.createElement('div');
+          bg.className = 'hero-background';
+          bg.style.backgroundImage = `url(${section.image})`;
+          sectionElem.appendChild(bg);
+        }
+        
+        const heroContent = document.createElement('div');
+        heroContent.className = 'hero-content animate-on-scroll';
+        
+        if (section.content) {
+          heroContent.innerHTML = section.content;
+        }
+        
+        container.appendChild(heroContent);
+        break;
+        
+      case 'cards':
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+        
+        if (section.items && section.items.length > 0) {
+          section.items.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'card animate-on-scroll';
+            
+            const title = document.createElement('h3');
+            title.textContent = item.title;
+            
+            const desc = document.createElement('p');
+            desc.textContent = item.description;
+            
+            card.appendChild(title);
+            card.appendChild(desc);
+            grid.appendChild(card);
+          });
+        }
+        
+        container.appendChild(grid);
+        break;
+        
+      case 'features':
+        const list = document.createElement('ul');
+        list.className = 'feature-list';
+        
+        if (section.items && section.items.length > 0) {
+          section.items.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'animate-on-scroll';
+            
+            const title = document.createElement('strong');
+            title.textContent = item.title;
+            
+            const desc = document.createElement('p');
+            desc.textContent = item.description;
+            
+            li.appendChild(title);
+            li.appendChild(desc);
+            list.appendChild(li);
+          });
+        }
+        
+        container.appendChild(list);
+        break;
+        
+      case 'before-after':
+        if (section.items && section.items.length >= 2) {
+          const sliderContainer = document.createElement('div');
+          sliderContainer.className = 'before-after-container animate-on-scroll';
+          
+          const beforeImg = document.createElement('img');
+          beforeImg.className = 'before-image';
+          beforeImg.src = section.items[0].image;
+          beforeImg.alt = 'Before';
+          
+          const afterContainer = document.createElement('div');
+          afterContainer.className = 'after-container';
+          
+          const afterImg = document.createElement('img');
+          afterImg.className = 'after-image';
+          afterImg.src = section.items[1].image;
+          afterImg.alt = 'After';
+          
+          const slider = document.createElement('div');
+          slider.className = 'slider';
+          
+          const sliderButton = document.createElement('div');
+          sliderButton.className = 'slider-button';
+          sliderButton.innerHTML = '&harr;';
+          
+          slider.appendChild(sliderButton);
+          afterContainer.appendChild(afterImg);
+          sliderContainer.appendChild(beforeImg);
+          sliderContainer.appendChild(afterContainer);
+          sliderContainer.appendChild(slider);
+          container.appendChild(sliderContainer);
+          
+          // Add slider functionality
+          setTimeout(() => {
+            const sliderEl = slider;
+            const afterContainerEl = afterContainer;
+            
+            let isDragging = false;
+            
+            const handleDrag = (e) => {
+              if (!isDragging) return;
+              let clientX = e.clientX;
+              if (e.touches) clientX = e.touches[0].clientX;
+              
+              const rect = sliderContainer.getBoundingClientRect();
+              const x = clientX - rect.left;
+              const percent = (x / rect.width) * 100;
+              
+              if (percent > 0 && percent < 100) {
+                sliderEl.style.left = `${percent}%`;
+                afterContainerEl.style.width = `${percent}%`;
+              }
+            };
+            
+            sliderEl.addEventListener('mousedown', () => {
+              isDragging = true;
+            });
+            
+            sliderEl.addEventListener('touchstart', () => {
+              isDragging = true;
+            });
+            
+            window.addEventListener('mouseup', () => {
+              isDragging = false;
+            });
+            
+            window.addEventListener('touchend', () => {
+              isDragging = false;
+            });
+            
+            window.addEventListener('mousemove', handleDrag);
+            window.addEventListener('touchmove', handleDrag);
+          }, 100);
+        }
+        break;
+        
+      case 'contact':
+        const form = document.createElement('form');
+        form.className = 'contact-form animate-on-scroll';
+        
+        if (section.formAction) {
+          form.action = section.formAction;
+        }
+        
+        form.innerHTML = `
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" class="form-control" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn">Send Message</button>
+        `;
+        
+        container.appendChild(form);
+        break;
+        
+      case 'custom':
+        if (section.content) {
+          const customContent = document.createElement('div');
+          customContent.className = 'animate-on-scroll';
+          customContent.innerHTML = section.content;
+          container.appendChild(customContent);
+        }
+        break;
+    }
+    
+    sectionElem.appendChild(container);
+    return sectionElem;
+  }
+</script>

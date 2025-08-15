@@ -1,0 +1,670 @@
+---
+import Layout from '../layouts/BlogPost.astro';
+---
+
+<Layout 
+  title="Landing Page Generator"
+  description="Create custom landing pages quickly with our template system"
+  pubDate={new Date()}
+>
+  <style>
+    .generator-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    
+    .section-card {
+      background: #f9f9f9;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #eee;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    button {
+      background: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    button:hover {
+      background: #0069D9;
+    }
+    
+    .section-buttons {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    
+    .code-output {
+      background: #f1f1f1;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 20px;
+      margin: 20px 0;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+    
+    .tab-container {
+      margin-bottom: 20px;
+    }
+    
+    .tab-buttons {
+      display: flex;
+      margin-bottom: 15px;
+    }
+    
+    .tab-button {
+      padding: 10px 15px;
+      background: #f1f1f1;
+      border: 1px solid #ddd;
+      border-radius: 4px 4px 0 0;
+      cursor: pointer;
+    }
+    
+    .tab-button.active {
+      background: #fff;
+      border-bottom: none;
+    }
+    
+    .tab-content {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 0 0 4px 4px;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .color-input-group {
+      display: flex;
+      align-items: center;
+    }
+    
+    .color-preview {
+      width: 30px;
+      height: 30px;
+      border-radius: 4px;
+      margin-right: 10px;
+    }
+  </style>
+
+  <div class="generator-container">
+    <h1>Landing Page Generator</h1>
+    <p>Create custom landing pages by filling out the form below. The generator will create a JSON configuration file that you can use with our landing page template.</p>
+    
+    <div class="tab-container">
+      <div class="tab-buttons">
+        <div class="tab-button active" data-tab="basic-info">Basic Info</div>
+        <div class="tab-button" data-tab="branding">Branding</div>
+        <div class="tab-button" data-tab="sections">Page Sections</div>
+        <div class="tab-button" data-tab="output">Generate Output</div>
+      </div>
+      
+      <div class="tab-content active" id="basic-info">
+        <h2>Basic Information</h2>
+        
+        <div class="form-group">
+          <label for="page-title">Page Title</label>
+          <input type="text" id="page-title" placeholder="Enter page title">
+        </div>
+        
+        <div class="form-group">
+          <label for="page-description">Meta Description</label>
+          <textarea id="page-description" placeholder="Enter page meta description" rows="3"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="language">Primary Language</label>
+          <select id="language">
+            <option value="en">English</option>
+            <option value="ar">Arabic</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Enable Multilingual Support?</label>
+          <div>
+            <input type="radio" id="multilingual-yes" name="multilingual" value="yes">
+            <label for="multilingual-yes">Yes</label>
+            
+            <input type="radio" id="multilingual-no" name="multilingual" value="no" checked>
+            <label for="multilingual-no">No</label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="branding">
+        <h2>Branding</h2>
+        
+        <div class="form-group">
+          <label for="brand-name">Brand Name</label>
+          <input type="text" id="brand-name" placeholder="Enter brand name">
+        </div>
+        
+        <div class="form-group">
+          <label for="brand-logo">Brand Logo URL</label>
+          <input type="text" id="brand-logo" placeholder="Enter logo URL">
+        </div>
+        
+        <div class="form-group">
+          <label for="primary-color">Primary Color</label>
+          <div class="color-input-group">
+            <div class="color-preview" id="primary-color-preview"></div>
+            <input type="text" id="primary-color" value="#007BFF" placeholder="Enter color hex code (e.g., #007BFF)">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="secondary-color">Secondary Color</label>
+          <div class="color-input-group">
+            <div class="color-preview" id="secondary-color-preview"></div>
+            <input type="text" id="secondary-color" value="#6C757D" placeholder="Enter color hex code (e.g., #6C757D)">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="text-color">Text Color</label>
+          <div class="color-input-group">
+            <div class="color-preview" id="text-color-preview"></div>
+            <input type="text" id="text-color" value="#333333" placeholder="Enter color hex code (e.g., #333333)">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="bg-color">Background Color</label>
+          <div class="color-input-group">
+            <div class="color-preview" id="bg-color-preview"></div>
+            <input type="text" id="bg-color" value="#FFFFFF" placeholder="Enter color hex code (e.g., #FFFFFF)">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="font-family">Font Family</label>
+          <select id="font-family">
+            <option value="Poppins, sans-serif">Poppins</option>
+            <option value="Arial, sans-serif">Arial</option>
+            <option value="'Roboto', sans-serif">Roboto</option>
+            <option value="'Open Sans', sans-serif">Open Sans</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="sections">
+        <h2>Page Sections</h2>
+        <p>Add sections to your landing page</p>
+        
+        <div id="sections-container">
+          <!-- Sections will be added dynamically here -->
+        </div>
+        
+        <div class="section-buttons">
+          <button type="button" id="add-hero-section">Add Hero Section</button>
+          <button type="button" id="add-cards-section">Add Cards Section</button>
+          <button type="button" id="add-features-section">Add Features Section</button>
+          <button type="button" id="add-before-after-section">Add Before/After Section</button>
+          <button type="button" id="add-contact-section">Add Contact Section</button>
+          <button type="button" id="add-custom-section">Add Custom Section</button>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="output">
+        <h2>Generated Output</h2>
+        
+        <div class="form-group">
+          <label for="file-name">Configuration File Name</label>
+          <input type="text" id="file-name" placeholder="Enter file name (without extension)" value="my-landing-page">
+        </div>
+        
+        <button type="button" id="generate-config">Generate Configuration</button>
+        <button type="button" id="generate-preview">Generate Preview Link</button>
+        
+        <div class="code-output" id="config-output">
+          Your configuration JSON will appear here...
+        </div>
+        
+        <div id="preview-link-container" style="display: none;">
+          <h3>Preview Link</h3>
+          <p>Use this link to view your landing page:</p>
+          <a href="#" id="preview-link" target="_blank">Preview Landing Page</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize color previews
+    function updateColorPreview(inputId, previewId) {
+      const input = document.getElementById(inputId);
+      const preview = document.getElementById(previewId);
+      preview.style.backgroundColor = input.value;
+      
+      input.addEventListener('input', () => {
+        preview.style.backgroundColor = input.value;
+      });
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set up color previews
+      updateColorPreview('primary-color', 'primary-color-preview');
+      updateColorPreview('secondary-color', 'secondary-color-preview');
+      updateColorPreview('text-color', 'text-color-preview');
+      updateColorPreview('bg-color', 'bg-color-preview');
+      
+      // Tab functionality
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const tabId = button.getAttribute('data-tab');
+          
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          tabContents.forEach(content => content.classList.remove('active'));
+          
+          button.classList.add('active');
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+      
+      // Section management
+      let sectionCount = 0;
+      const sectionsContainer = document.getElementById('sections-container');
+      
+      // Function to add a section card
+      function addSectionCard(type, title) {
+        const sectionId = `section-${sectionCount++}`;
+        const card = document.createElement('div');
+        card.className = 'section-card';
+        card.dataset.sectionType = type;
+        card.dataset.sectionId = sectionId;
+        
+        const header = document.createElement('div');
+        header.className = 'section-header';
+        
+        const titleElement = document.createElement('h3');
+        titleElement.textContent = title;
+        
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.className = 'delete-section';
+        deleteButton.addEventListener('click', () => {
+          card.remove();
+        });
+        
+        header.appendChild(titleElement);
+        header.appendChild(deleteButton);
+        card.appendChild(header);
+        
+        // Common fields for all section types
+        const commonFields = `
+          <div class="form-group">
+            <label for="${sectionId}-id">Section ID</label>
+            <input type="text" id="${sectionId}-id" placeholder="Enter section ID" value="section-${sectionCount}">
+          </div>
+          <div class="form-group">
+            <label for="${sectionId}-title">Section Title</label>
+            <input type="text" id="${sectionId}-title" placeholder="Enter section title">
+          </div>
+          <div class="form-group">
+            <label for="${sectionId}-subtitle">Section Subtitle</label>
+            <input type="text" id="${sectionId}-subtitle" placeholder="Enter section subtitle">
+          </div>
+        `;
+        
+        // Type-specific fields
+        let typeFields = '';
+        
+        switch(type) {
+          case 'hero':
+            typeFields = `
+              <div class="form-group">
+                <label for="${sectionId}-image">Background Image URL</label>
+                <input type="text" id="${sectionId}-image" placeholder="Enter image URL">
+              </div>
+              <div class="form-group">
+                <label for="${sectionId}-content">Content HTML</label>
+                <textarea id="${sectionId}-content" rows="5" placeholder="Enter HTML content or additional text"></textarea>
+              </div>
+            `;
+            break;
+            
+          case 'cards':
+            typeFields = `
+              <h4>Cards</h4>
+              <div id="${sectionId}-cards-container">
+                <!-- Cards will be added here -->
+              </div>
+              <button type="button" class="add-card" data-section-id="${sectionId}">Add Card</button>
+            `;
+            break;
+            
+          case 'features':
+            typeFields = `
+              <h4>Features</h4>
+              <div id="${sectionId}-features-container">
+                <!-- Features will be added here -->
+              </div>
+              <button type="button" class="add-feature" data-section-id="${sectionId}">Add Feature</button>
+            `;
+            break;
+            
+          case 'before-after':
+            typeFields = `
+              <div class="form-group">
+                <label for="${sectionId}-before-image">Before Image URL</label>
+                <input type="text" id="${sectionId}-before-image" placeholder="Enter before image URL">
+              </div>
+              <div class="form-group">
+                <label for="${sectionId}-after-image">After Image URL</label>
+                <input type="text" id="${sectionId}-after-image" placeholder="Enter after image URL">
+              </div>
+            `;
+            break;
+            
+          case 'contact':
+            typeFields = `
+              <div class="form-group">
+                <label for="${sectionId}-form-action">Form Action URL</label>
+                <input type="text" id="${sectionId}-form-action" placeholder="Enter form submission URL">
+              </div>
+            `;
+            break;
+            
+          case 'custom':
+            typeFields = `
+              <div class="form-group">
+                <label for="${sectionId}-content">Custom HTML Content</label>
+                <textarea id="${sectionId}-content" rows="10" placeholder="Enter custom HTML content"></textarea>
+              </div>
+            `;
+            break;
+        }
+        
+        card.innerHTML += `
+          ${commonFields}
+          ${typeFields}
+          <div class="form-group">
+            <label for="${sectionId}-bg-color">Section Background Color</label>
+            <input type="text" id="${sectionId}-bg-color" placeholder="Enter color hex code (optional)">
+          </div>
+        `;
+        
+        sectionsContainer.appendChild(card);
+        
+        // Add event listeners for add card/feature buttons
+        if (type === 'cards') {
+          // Add first card automatically
+          addCard(sectionId);
+          
+          const addCardButton = card.querySelector('.add-card');
+          addCardButton.addEventListener('click', () => {
+            addCard(sectionId);
+          });
+        }
+        
+        if (type === 'features') {
+          // Add first feature automatically
+          addFeature(sectionId);
+          
+          const addFeatureButton = card.querySelector('.add-feature');
+          addFeatureButton.addEventListener('click', () => {
+            addFeature(sectionId);
+          });
+        }
+      }
+      
+      // Helper function to add a card to a cards section
+      function addCard(sectionId) {
+        const cardsContainer = document.getElementById(`${sectionId}-cards-container`);
+        const cardIndex = cardsContainer.children.length;
+        
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'section-card';
+        cardDiv.style.background = '#f0f0f0';
+        cardDiv.innerHTML = `
+          <div class="section-header">
+            <h4>Card ${cardIndex + 1}</h4>
+            <button type="button" class="delete-card">Remove</button>
+          </div>
+          <div class="form-group">
+            <label for="${sectionId}-card-${cardIndex}-title">Card Title</label>
+            <input type="text" id="${sectionId}-card-${cardIndex}-title" placeholder="Enter card title">
+          </div>
+          <div class="form-group">
+            <label for="${sectionId}-card-${cardIndex}-description">Card Description</label>
+            <textarea id="${sectionId}-card-${cardIndex}-description" placeholder="Enter card description" rows="3"></textarea>
+          </div>
+        `;
+        
+        cardsContainer.appendChild(cardDiv);
+        
+        // Add delete event listener
+        const deleteButton = cardDiv.querySelector('.delete-card');
+        deleteButton.addEventListener('click', () => {
+          cardDiv.remove();
+        });
+      }
+      
+      // Helper function to add a feature to a features section
+      function addFeature(sectionId) {
+        const featuresContainer = document.getElementById(`${sectionId}-features-container`);
+        const featureIndex = featuresContainer.children.length;
+        
+        const featureDiv = document.createElement('div');
+        featureDiv.className = 'section-card';
+        featureDiv.style.background = '#f0f0f0';
+        featureDiv.innerHTML = `
+          <div class="section-header">
+            <h4>Feature ${featureIndex + 1}</h4>
+            <button type="button" class="delete-feature">Remove</button>
+          </div>
+          <div class="form-group">
+            <label for="${sectionId}-feature-${featureIndex}-title">Feature Title</label>
+            <input type="text" id="${sectionId}-feature-${featureIndex}-title" placeholder="Enter feature title">
+          </div>
+          <div class="form-group">
+            <label for="${sectionId}-feature-${featureIndex}-description">Feature Description</label>
+            <textarea id="${sectionId}-feature-${featureIndex}-description" placeholder="Enter feature description" rows="3"></textarea>
+          </div>
+        `;
+        
+        featuresContainer.appendChild(featureDiv);
+        
+        // Add delete event listener
+        const deleteButton = featureDiv.querySelector('.delete-feature');
+        deleteButton.addEventListener('click', () => {
+          featureDiv.remove();
+        });
+      }
+      
+      // Add section button event listeners
+      document.getElementById('add-hero-section').addEventListener('click', () => {
+        addSectionCard('hero', 'Hero Section');
+      });
+      
+      document.getElementById('add-cards-section').addEventListener('click', () => {
+        addSectionCard('cards', 'Cards Section');
+      });
+      
+      document.getElementById('add-features-section').addEventListener('click', () => {
+        addSectionCard('features', 'Features Section');
+      });
+      
+      document.getElementById('add-before-after-section').addEventListener('click', () => {
+        addSectionCard('before-after', 'Before/After Section');
+      });
+      
+      document.getElementById('add-contact-section').addEventListener('click', () => {
+        addSectionCard('contact', 'Contact Section');
+      });
+      
+      document.getElementById('add-custom-section').addEventListener('click', () => {
+        addSectionCard('custom', 'Custom Section');
+      });
+      
+      // Generate configuration
+      document.getElementById('generate-config').addEventListener('click', () => {
+        const config = {
+          meta: {
+            title: document.getElementById('page-title').value || 'Untitled Landing Page',
+            description: document.getElementById('page-description').value || '',
+            language: document.getElementById('language').value || 'en',
+            direction: document.getElementById('language').value === 'ar' ? 'rtl' : 'ltr'
+          },
+          brand: {
+            name: document.getElementById('brand-name').value || 'Brand Name',
+            logo: document.getElementById('brand-logo').value || 'https://via.placeholder.com/150x50',
+            primaryColor: document.getElementById('primary-color').value || '#007BFF',
+            secondaryColor: document.getElementById('secondary-color').value || '#6C757D',
+            textColor: document.getElementById('text-color').value || '#333333',
+            backgroundColor: document.getElementById('bg-color').value || '#FFFFFF',
+            fontFamily: document.getElementById('font-family').value || 'Poppins, sans-serif'
+          },
+          sections: [],
+          footer: {
+            text: `© ${new Date().getFullYear()} ${document.getElementById('brand-name').value || 'Brand Name'}. All rights reserved.`,
+            links: [
+              { text: 'Privacy Policy', url: '#' },
+              { text: 'Terms of Service', url: '#' }
+            ]
+          }
+        };
+        
+        // Add multilingual support if enabled
+        if (document.getElementById('multilingual-yes').checked) {
+          config.multilingual = {
+            enabled: true,
+            languages: [
+              { code: 'en', name: 'English', isRTL: false },
+              { code: 'ar', name: 'Arabic', isRTL: true }
+            ]
+          };
+        }
+        
+        // Process sections
+        const sectionCards = document.querySelectorAll('#sections-container .section-card');
+        sectionCards.forEach(card => {
+          const type = card.dataset.sectionType;
+          const sectionId = card.dataset.sectionId;
+          
+          const section = {
+            type,
+            id: document.getElementById(`${sectionId}-id`).value || sectionId,
+            title: document.getElementById(`${sectionId}-title`).value || '',
+            subtitle: document.getElementById(`${sectionId}-subtitle`).value || ''
+          };
+          
+          // Add background color if specified
+          const bgColor = document.getElementById(`${sectionId}-bg-color`).value;
+          if (bgColor) {
+            section.style = { backgroundColor: bgColor };
+          }
+          
+          // Add type-specific properties
+          switch(type) {
+            case 'hero':
+              section.image = document.getElementById(`${sectionId}-image`).value || '';
+              section.content = document.getElementById(`${sectionId}-content`).value || '';
+              break;
+              
+            case 'cards':
+              const cards = [];
+              const cardElements = document.querySelectorAll(`#${sectionId}-cards-container .section-card`);
+              cardElements.forEach((cardEl, index) => {
+                cards.push({
+                  title: document.getElementById(`${sectionId}-card-${index}-title`).value || `Card ${index + 1}`,
+                  description: document.getElementById(`${sectionId}-card-${index}-description`).value || ''
+                });
+              });
+              section.items = cards;
+              break;
+              
+            case 'features':
+              const features = [];
+              const featureElements = document.querySelectorAll(`#${sectionId}-features-container .section-card`);
+              featureElements.forEach((featureEl, index) => {
+                features.push({
+                  title: document.getElementById(`${sectionId}-feature-${index}-title`).value || `Feature ${index + 1}`,
+                  description: document.getElementById(`${sectionId}-feature-${index}-description`).value || ''
+                });
+              });
+              section.items = features;
+              break;
+              
+            case 'before-after':
+              section.items = [
+                { image: document.getElementById(`${sectionId}-before-image`).value || 'https://via.placeholder.com/800x500?text=Before' },
+                { image: document.getElementById(`${sectionId}-after-image`).value || 'https://via.placeholder.com/800x500?text=After' }
+              ];
+              break;
+              
+            case 'contact':
+              section.formAction = document.getElementById(`${sectionId}-form-action`).value || '';
+              break;
+              
+            case 'custom':
+              section.content = document.getElementById(`${sectionId}-content`).value || '';
+              break;
+          }
+          
+          config.sections.push(section);
+        });
+        
+        // Display the generated configuration
+        const configOutput = document.getElementById('config-output');
+        configOutput.textContent = JSON.stringify(config, null, 2);
+        
+        // Store the config in localStorage for preview
+        const fileName = document.getElementById('file-name').value || 'my-landing-page';
+        localStorage.setItem(`landingConfig_${fileName}`, JSON.stringify(config));
+      });
+      
+      // Generate preview link
+      document.getElementById('generate-preview').addEventListener('click', () => {
+        const fileName = document.getElementById('file-name').value || 'my-landing-page';
+        // Generate the configuration first
+        document.getElementById('generate-config').click();
+        
+        // Create a preview link
+        const previewLinkContainer = document.getElementById('preview-link-container');
+        const previewLink = document.getElementById('preview-link');
+        previewLink.href = `/preview-landing/${fileName}`;
+        previewLinkContainer.style.display = 'block';
+      });
+    });
+  </script>
+</Layout>

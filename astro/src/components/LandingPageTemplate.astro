@@ -1,0 +1,904 @@
+---
+// LandingPageTemplate.astro - A configurable landing page template
+interface Config {
+  meta: {
+    title: string;
+    description: string;
+    language: string;
+    direction: string;
+  };
+  brand: {
+    name: string;
+    logo: string;
+    primaryColor: string;
+    secondaryColor: string;
+    textColor: string;
+    backgroundColor: string;
+    fontFamily: string;
+  };
+  sections: Array<{
+    type: string;
+    id: string;
+    title?: string;
+    subtitle?: string;
+    content?: string;
+    image?: string;
+    formAction?: string;
+    items?: Array<any>;
+    style?: Record<string, string>;
+  }>;
+  footer: {
+    text: string;
+    links: Array<{
+      text: string;
+      url: string;
+    }>;
+  };
+  multilingual?: {
+    enabled: boolean;
+    languages: Array<{
+      code: string;
+      name: string;
+      isRTL: boolean;
+    }>;
+  };
+}
+
+interface Props {
+  config: Config;
+}
+
+const { config } = Astro.props;
+const { meta, brand, sections, footer, multilingual } = config;
+---
+
+<!DOCTYPE html>
+<html lang={meta.language} dir={meta.direction}>
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.jpg" />
+  <meta name="viewport" content="width=device-width" />
+  <meta name="generator" content={Astro.generator} />
+  <meta name="description" content={meta.description} />
+  <title>{meta.title}</title>
+  
+  <!-- Google Fonts - Default set -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style define:vars={{
+    primaryColor: brand.primaryColor,
+    secondaryColor: brand.secondaryColor,
+    textColor: brand.textColor,
+    bgColor: brand.backgroundColor,
+    fontFamily: brand.fontFamily,
+  }}>
+    /* Reset & Global Styles */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    :root {
+      --primary-color: var(--primaryColor);
+      --secondary-color: var(--secondaryColor);
+      --text-color: var(--textColor);
+      --bg-color: var(--bgColor);
+      --font-family: var(--fontFamily);
+      --transition: all 0.3s ease;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: var(--font-family);
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    
+    a:hover {
+      color: var(--secondary-color);
+    }
+    
+    button, .btn {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      text-align: center;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    
+    button:hover, .btn:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+      color: white;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    
+    p {
+      margin-bottom: 16px;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header Styles */
+    header {
+      padding: 20px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      transition: var(--transition);
+    }
+    
+    header.scrolled {
+      padding: 10px 0;
+    }
+    
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header-logo {
+      display: flex;
+      align-items: center;
+    }
+    
+    .header-logo img {
+      max-height: 40px;
+      width: auto;
+    }
+    
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 5px;
+    }
+    
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+    
+    nav ul li {
+      margin-left: 30px;
+    }
+    
+    nav ul li a {
+      font-weight: 600;
+      position: relative;
+      padding: 5px 0;
+    }
+    
+    nav ul li a::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-color);
+      transition: var(--transition);
+    }
+    
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+    
+    /* Language Selector */
+    .language-selector {
+      position: relative;
+      margin-left: 20px;
+    }
+    
+    .language-button {
+      background: none;
+      border: 1px solid #ddd;
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    .language-options {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 5px 0;
+      display: none;
+      min-width: 100px;
+      z-index: 100;
+    }
+    
+    .language-options a {
+      display: block;
+      padding: 5px 10px;
+      text-align: left;
+      font-size: 14px;
+    }
+    
+    .language-options a:hover {
+      background-color: #f5f5f5;
+    }
+    
+    .language-selector:hover .language-options {
+      display: block;
+    }
+    
+    /* Main Content and Sections */
+    main {
+      padding-top: 80px; /* Accounts for fixed header */
+    }
+    
+    section {
+      padding: 80px 0;
+    }
+    
+    .section-intro {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    
+    .section-intro h2 {
+      font-size: 2.5rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .section-intro h2:after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 3px;
+      background-color: var(--primary-color);
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .section-intro p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 30px auto 0;
+    }
+    
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 90vh;
+      min-height: 500px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 0;
+    }
+    
+    .hero-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+    }
+    
+    .hero:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+    
+    .hero .container {
+      color: white;
+      text-align: center;
+    }
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto 30px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+    
+    /* Cards Section */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: var(--transition);
+    }
+    
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    
+    .card h3 {
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+    
+    /* Features Section */
+    .feature-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px 30px;
+    }
+    
+    .feature-list li {
+      position: relative;
+      padding-left: 30px;
+    }
+    
+    .feature-list li:before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--primary-color);
+      font-weight: bold;
+      font-size: 18px;
+    }
+    
+    .feature-list strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      color: var(--secondary-color);
+    }
+    
+    /* Before/After Section */
+    .before-after-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    
+    .before-image {
+      display: block;
+      width: 100%;
+    }
+    
+    .after-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+    }
+    
+    .after-image {
+      display: block;
+      width: 200%;
+      position: absolute;
+      top: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 4px;
+      background-color: white;
+      cursor: ew-resize;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+    
+    .slider-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: white;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--primary-color);
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    
+    /* Contact Form */
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+    
+    .form-control:focus {
+      border-color: var(--primary-color);
+      outline: none;
+    }
+    
+    /* Footer */
+    footer {
+      background-color: #f8f9fa;
+      padding: 40px 0;
+      margin-top: 40px;
+      text-align: center;
+    }
+    
+    .footer-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .footer-logo {
+      max-width: 120px;
+      margin-bottom: 20px;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+    
+    .footer-links a {
+      margin: 0 15px 10px;
+      font-size: 14px;
+    }
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      margin: 0 10px;
+      transition: var(--transition);
+    }
+    
+    .social-links a:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-3px);
+    }
+    
+    /* Animation */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 991px) {
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+      .section-intro h2 {
+        font-size: 2rem;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      .nav-toggle {
+        display: block;
+      }
+      
+      nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        display: none;
+      }
+      
+      nav.active {
+        display: block;
+      }
+      
+      nav ul {
+        flex-direction: column;
+      }
+      
+      nav ul li {
+        margin: 0 0 15px 0;
+      }
+      
+      .hero {
+        height: 70vh;
+      }
+      
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      
+      section {
+        padding: 60px 0;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      
+      .section-intro h2 {
+        font-size: 1.5rem;
+      }
+      
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .feature-list {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* RTL Support */
+    [dir="rtl"] nav ul li {
+      margin-right: 30px;
+      margin-left: 0;
+    }
+    
+    [dir="rtl"] .feature-list li {
+      padding-right: 30px;
+      padding-left: 0;
+    }
+    
+    [dir="rtl"] .feature-list li:before {
+      right: 0;
+      left: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container header-container">
+      <div class="header-logo">
+        <img src={brand.logo} alt={brand.name} />
+      </div>
+      
+      <button class="nav-toggle">☰</button>
+      
+      <nav>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          {sections.map(section => (
+            <li><a href={`#${section.id}`}>{section.title}</a></li>
+          ))}
+        </ul>
+      </nav>
+      
+      {multilingual?.enabled && (
+        <div class="language-selector">
+          <button class="language-button">
+            {meta.language.toUpperCase()}
+            <span>▼</span>
+          </button>
+          <div class="language-options">
+            {multilingual.languages.map(lang => (
+              <a href={`#${lang.code}`}>{lang.name}</a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </header>
+  
+  <!-- Main Content -->
+  <main>
+    {sections.map(section => {
+      if (section.type === 'hero') {
+        return (
+          <section id={section.id} class="hero">
+            {section.image && (
+              <div class="hero-background" style={`background-image: url(${section.image});`}></div>
+            )}
+            <div class="container">
+              <div class="hero-content animate-on-scroll">
+                <h1>{section.title}</h1>
+                <p>{section.subtitle}</p>
+                {section.content && <div set:html={section.content} />}
+              </div>
+            </div>
+          </section>
+        );
+      } else {
+        return (
+          <section id={section.id} class={section.type} style={section.style}>
+            <div class="container">
+              <div class="section-intro animate-on-scroll">
+                <h2>{section.title}</h2>
+                <p>{section.subtitle}</p>
+              </div>
+              
+              {section.type === 'cards' && section.items && (
+                <div class="grid">
+                  {section.items.map(item => (
+                    <div class="card animate-on-scroll">
+                      <h3>{item.title}</h3>
+                      <p>{item.description}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {section.type === 'features' && section.items && (
+                <ul class="feature-list">
+                  {section.items.map(item => (
+                    <li class="animate-on-scroll">
+                      <strong>{item.title}</strong>
+                      <p>{item.description}</p>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              
+              {section.type === 'before-after' && section.items && section.items.length >= 2 && (
+                <div class="before-after-container animate-on-scroll">
+                  <img src={section.items[0].image} alt="Before" class="before-image" />
+                  <div class="after-container" style="width: 50%;">
+                    <img src={section.items[1].image} alt="After" class="after-image" />
+                  </div>
+                  <div class="slider" style="left: 50%;">
+                    <div class="slider-button">&harr;</div>
+                  </div>
+                </div>
+              )}
+              
+              {section.type === 'contact' && (
+                <form class="contact-form animate-on-scroll" action={section.formAction || '#'} method="POST">
+                  <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" class="form-control" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
+                  </div>
+                  <button type="submit" class="btn">Send Message</button>
+                </form>
+              )}
+              
+              {section.type === 'custom' && section.content && (
+                <div class="animate-on-scroll" set:html={section.content} />
+              )}
+            </div>
+          </section>
+        );
+      }
+    })}
+  </main>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-content">
+      <img src={brand.logo} alt={brand.name} class="footer-logo" />
+      <div class="footer-links">
+        {footer.links.map(link => (
+          <a href={link.url} target="_blank" rel="noopener">{link.text}</a>
+        ))}
+      </div>
+      <p>{footer.text}</p>
+    </div>
+  </footer>
+  
+  <!-- Scripts -->
+  <script>
+    // Mobile Menu Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const navToggle = document.querySelector('.nav-toggle');
+      const nav = document.querySelector('nav');
+      
+      if (navToggle && nav) {
+        navToggle.addEventListener('click', function() {
+          nav.classList.toggle('active');
+        });
+      }
+      
+      // Header Scroll Effect
+      const header = document.querySelector('header');
+      if (header) {
+        window.addEventListener('scroll', function() {
+          if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+          } else {
+            header.classList.remove('scrolled');
+          }
+        });
+      }
+      
+      // Animation on Scroll
+      const animatedElements = document.querySelectorAll('.animate-on-scroll');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      animatedElements.forEach(el => observer.observe(el));
+      
+      // Before/After Slider
+      const sliders = document.querySelectorAll('.slider');
+      sliders.forEach(slider => {
+        const beforeAfterContainer = slider.closest('.before-after-container');
+        const afterContainer = beforeAfterContainer?.querySelector('.after-container');
+        
+        if (!beforeAfterContainer || !afterContainer) return;
+        
+        let isDragging = false;
+        
+        const handleDrag = (e) => {
+          if (!isDragging) return;
+          
+          let clientX = e.clientX;
+          if (e.touches) clientX = e.touches[0].clientX;
+          
+          const rect = beforeAfterContainer.getBoundingClientRect();
+          const x = clientX - rect.left;
+          const percent = (x / rect.width) * 100;
+          
+          if (percent > 0 && percent < 100) {
+            slider.style.left = `${percent}%`;
+            afterContainer.style.width = `${percent}%`;
+          }
+        };
+        
+        slider.addEventListener('mousedown', () => { isDragging = true; });
+        slider.addEventListener('touchstart', () => { isDragging = true; });
+        
+        window.addEventListener('mouseup', () => { isDragging = false; });
+        window.addEventListener('touchend', () => { isDragging = false; });
+        
+        window.addEventListener('mousemove', handleDrag);
+        window.addEventListener('touchmove', handleDrag);
+      });
+      
+      // Smooth Scroll for Anchor Links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          
+          const targetId = this.getAttribute('href').substring(1);
+          if (!targetId) return;
+          
+          const targetElement = document.getElementById(targetId);
+          if (!targetElement) return;
+          
+          const navHeight = document.querySelector('header').offsetHeight;
+          const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+          
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+          
+          // Close mobile menu if open
+          if (nav.classList.contains('active')) {
+            nav.classList.remove('active');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

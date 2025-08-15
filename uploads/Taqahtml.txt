@@ -1,0 +1,650 @@
+<iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot; /&gt;
+    &lt;title&gt;TAQA Petroleum — From Fuel Station to Destination&lt;/title&gt;
+
+    &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;&gt;
+    &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin&gt;
+    &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&amp;family=Poppins:wght@300;400;600;700;800&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+
+    &lt;style&gt;
+        :root{
+            --taqa-gold: #c3986e;
+            --taqa-brown: #744720;
+            --taqa-white: #ffffff;
+            --dark-bg: #0f0f10;
+            --text-muted: #bfb7ad;
+            --cycle-bg: rgba(255,255,255,0.04);
+            --cycle-accent: linear-gradient(135deg,var(--taqa-gold),var(--taqa-brown));
+            --shadow-strong: 0 20px 60px rgba(0,0,0,0.6);
+        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth}
+        body{
+            font-family: 'Poppins', sans-serif;
+            background:var(--dark-bg);
+            color:var(--taqa-white);
+            line-height:1.6;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+            overflow-x:hidden;
+        }
+
+        /* Header */
+        .header{
+            position:fixed;left:0;top:0;width:100%;
+            display:flex;align-items:center;justify-content:space-between;
+            padding:1rem 2rem;background:rgba(15,15,16,0.9);backdrop-filter:blur(10px);
+            z-index:1000;border-bottom:1px solid rgba(255,255,255,0.03)
+        }
+        .header .logo {
+            display:flex;align-items:center;gap:.75rem;
+        }
+        /* Simple inline SVG logo */
+        .taqa-mark{width:140px;height:auto;display:block}
+        .lang-toggle{
+            background:linear-gradient(135deg,var(--taqa-gold),var(--taqa-brown));
+            color:var(--dark-bg);border:none;padding:.6rem 1rem;border-radius:24px;cursor:pointer;font-weight:700;
+            box-shadow:0 10px 30px rgba(195,152,110,0.12);
+        }
+
+        /* Loading overlay */
+        .loading-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--dark-bg);z-index:9999}
+        .loading-overlay.hidden{opacity:0;pointer-events:none;transition:opacity .5s}
+        .loader{width:56px;height:56px;border:4px solid rgba(255,255,255,0.06);border-top:4px solid var(--taqa-gold);border-radius:50%;animation:spin 1s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        /* Main container sections */
+        .container{max-width:1200px;margin:0 auto;padding:6rem 2rem}
+        .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+        .hero-background{
+            position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1495433324511-bf8e92934d90?q=80&amp;w=1600&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;s=0b2cf0c3d2b9e9a8b6e4b0e1c7f1b3b7') center/cover no-repeat;
+            opacity:.28;filter:grayscale(.0) brightness(.5);transform-origin:center;animation:zoomInOut 30s infinite alternate;z-index:-2
+        }
+        @keyframes zoomInOut{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1.1)}}
+
+        .hero-content h1{font-size:clamp(2rem,6vw,4rem);line-height:1.05;font-weight:800;color:var(--taqa-white);text-shadow:2px 6px 30px rgba(0,0,0,.7)}
+        .hero-content .tagline{margin-top:1rem;color:var(--text-muted);font-size:1.25rem}
+
+        /* Before/After Slider */
+        .before-after-slider{position:relative;margin:3rem auto 0;max-width:980px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow-strong);aspect-ratio:16/9;background:var(--cycle-bg)}
+        .before-after-slider .before-image,.before-after-slider .after-image{position:absolute;inset:0}
+        .before-after-slider img{width:100%;height:100%;object-fit:cover;display:block}
+        .before-after-slider .after-image{width:50%;border-right:4px solid var(--taqa-gold)}
+        .slider-handle{position:absolute;top:0;left:50%;transform:translateX(-50%);height:100%;width:70px;display:flex;align-items:center;justify-content:center;cursor:ew-resize;z-index:20}
+        .slider-handle-button{width:56px;height:56px;border-radius:50%;background:var(--taqa-white);color:var(--dark-bg);display:flex;align-items:center;justify-content:center;font-weight:800;box-shadow:0 10px 30px rgba(0,0,0,.4);pointer-events:none}
+
+        /* Strategic grid */
+        .strategic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2.2rem;margin-top:3rem}
+        .strategic-card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:2.4rem;border-radius:12px;border:1px solid rgba(255,255,255,0.04)}
+        .strategic-card h3{background:var(--cycle-accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:1.4rem}
+        .strategic-card p{color:var(--text-muted);font-size:1.05rem}
+
+        /* Cycle wrapper */
+        .cycle-wrapper{display:flex;justify-content:center;align-items:center;padding:4rem 0}
+        .cycle-container{position:relative;width:520px;height:520px}
+        .center-core{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:800;background:var(--cycle-accent);color:var(--dark-bg);box-shadow:0 20px 60px rgba(115,71,32,0.12);font-size:1.05rem}
+        .cycle-step{position:absolute;width:130px;height:130px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:700;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:2px solid rgba(255,255,255,0.03);color:var(--taqa-white);opacity:0;transform:translate(-50%,-50%) scale(.95);transition:all .35s ease}
+        .cycle-step:hover{transform:translate(-50%,-50%) scale(1.06);background:var(--cycle-accent)}
+
+        /* Blueprint list and typing */
+        .blueprint-list{max-width:980px;margin:2rem auto 0;display:block}
+        .blueprint-item{background:rgba(255,255,255,0.02);padding:1.6rem;border-radius:12px;border-left:6px solid var(--taqa-gold);margin-bottom:1.5rem}
+        .blueprint-item dt{font-weight:800;margin-bottom:.5rem}
+        .blueprint-item dd{color:var(--text-muted);min-height:48px}
+
+        .typing-cursor{display:inline-block;width:2px;height:1.2rem;background:var(--taqa-gold);animation:blink .8s infinite;vertical-align:middle;margin-left:6px}
+        @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+
+        /* Slideshow */
+        .slideshow-container{max-width:900px;margin:2rem auto;height:480px;border-radius:18px;overflow:hidden;background:rgba(255,255,255,0.02);box-shadow:var(--shadow-strong)}
+        .slideshow-container img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s ease}
+        .slideshow-container img.active{opacity:1}
+        .slideshow-nav{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:.6rem;z-index:20}
+        .slideshow-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.2);cursor:pointer}
+        .slideshow-dot.active{background:var(--taqa-gold);transform:scale(1.1)}
+
+        /* Accordion (Switch Communications section will use this) */
+        .accordion-item{margin-bottom:1rem;background:rgba(255,255,255,0.02);border-radius:10px;overflow:hidden}
+        .accordion-trigger{display:flex;justify-content:space-between;padding:1.25rem 1.5rem;cursor:pointer;border:none;background:none;color:inherit}
+        .accordion-trigger h3{margin:0;font-size:1.1rem;font-weight:800}
+        .accordion-trigger::after{content:'';width:10px;height:10px;border-right:3px solid var(--taqa-gold);border-bottom:3px solid var(--taqa-gold);transform:rotate(45deg);display:inline-block;transition:transform .35s}
+        .accordion-trigger.active::after{transform:rotate(-135deg)}
+        .accordion-content{max-height:0;overflow:hidden;transition:max-height .45s ease}
+        .accordion-content .content-inner{padding:0 1.5rem 1.5rem 1.5rem;color:var(--text-muted)}
+
+        /* Footer */
+        .footer{padding:4rem 2rem;border-top:1px solid rgba(255,255,255,0.03);text-align:center;background:linear-gradient(180deg,rgba(15,15,16,0.95),rgba(10,10,10,0.98))}
+        .footer p{color:var(--text-muted);margin-bottom:1rem}
+
+        /* Anim utilities */
+        .anim-target{opacity:0;transform:translateY(30px);transition:all .6s ease}
+        .fade-in{opacity:1;transform:none}
+
+        /* Responsive */
+        @media (max-width:900px){
+            .center-core{width:160px;height:160px;font-size:.95rem}
+            .cycle-container{width:420px;height:420px}
+            .container{padding:4rem 1.1rem}
+            .slideshow-container{height:320px}
+        }
+        @media (max-width:600px){
+            .cycle-container{transform:scale(.68)}
+            .hero-content h1{font-size:2rem}
+            .before-after-slider{max-width:100%;aspect-ratio:16/9}
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body data-lang=&quot;en&quot;&gt;
+
+    &lt;!-- Loading --&gt;
+    &lt;div class=&quot;loading-overlay&quot; id=&quot;loading-overlay&quot;&gt;
+        &lt;div class=&quot;loader&quot; aria-hidden=&quot;true&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Header --&gt;
+    &lt;header class=&quot;header&quot; id=&quot;main-header&quot;&gt;
+        &lt;div class=&quot;logo&quot;&gt;
+            &lt;!-- simple SVG &quot;TAQA&quot; mark to avoid external logo placeholder --&gt;
+            &lt;svg class=&quot;taqa-mark&quot; viewBox=&quot;0 0 320 64&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; aria-hidden=&quot;true&quot;&gt;
+                &lt;rect width=&quot;320&quot; height=&quot;64&quot; rx=&quot;8&quot; fill=&quot;none&quot;&gt;&lt;/rect&gt;
+                &lt;text x=&quot;12&quot; y=&quot;44&quot; font-family=&quot;Poppins, Arial, sans-serif&quot; font-weight=&quot;800&quot; font-size=&quot;38&quot; fill=&quot;#ffffff&quot;&gt;TAQA&lt;/text&gt;
+                &lt;rect x=&quot;170&quot; y=&quot;10&quot; width=&quot;120&quot; height=&quot;44&quot; rx=&quot;8&quot; fill=&quot;#c3986e&quot;&gt;&lt;/rect&gt;
+                &lt;text x=&quot;185&quot; y=&quot;40&quot; font-family=&quot;Poppins, Arial, sans-serif&quot; font-weight=&quot;700&quot; font-size=&quot;18&quot; fill=&quot;#ffffff&quot;&gt;Petroleum&lt;/text&gt;
+            &lt;/svg&gt;
+        &lt;/div&gt;
+
+        &lt;button class=&quot;lang-toggle&quot; id=&quot;lang-toggle-btn&quot; aria-pressed=&quot;false&quot;&gt;العربية&lt;/button&gt;
+    &lt;/header&gt;
+
+    &lt;main&gt;
+        &lt;!-- HERO --&gt;
+        &lt;section class=&quot;hero container&quot;&gt;
+            &lt;div class=&quot;hero-background&quot; aria-hidden=&quot;true&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;hero-content&quot; role=&quot;region&quot; aria-label=&quot;Hero&quot;&gt;
+                &lt;h1 class=&quot;hero-headline&quot; data-lang-en=&quot;From only a fuel station... to a Destination.&quot; data-lang-ar=&quot;من مجرد محطة وقود... إلى وجهة متكاملة.&quot;&gt;&lt;/h1&gt;
+                &lt;p class=&quot;tagline&quot; data-lang-en=&quot;TAQA transforms everyday stops into dependable, modern destinations — sustainable, service-driven, and locally rooted.&quot; data-lang-ar=&quot;تحول TAQA المحطات اليومية إلى وجهات حديثة موثوقة — مستدامة، مدفوعة بالخدمة، ومرتكزة محليًا.&quot;&gt;&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- TRANSFORMATION / BEFORE-AFTER --&gt;
+        &lt;section class=&quot;container&quot; id=&quot;transformation&quot;&gt;
+            &lt;div class=&quot;section-intro&quot;&gt;
+                &lt;h2 class=&quot;anim-target&quot; data-lang-en=&quot;Visualizing the Transformation&quot; data-lang-ar=&quot;تصوّر التحول&quot;&gt;&lt;/h2&gt;
+                &lt;p class=&quot;anim-target&quot; data-lang-en=&quot;From an old functional stop to a vibrant, service-led hub. Drag the slider to see the change.&quot; data-lang-ar=&quot;من محطة قديمة وظيفية إلى محور حيوي يقوده الخدمات. اسحب المؤشر لرؤية التغيير.&quot;&gt;&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;before-after-slider anim-target&quot; id=&quot;before-after&quot; aria-label=&quot;Before and after transformation&quot;&gt;
+                &lt;div class=&quot;before-image&quot;&gt;&lt;img src=&quot;https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&amp;w=1600&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;s=8c7b9a5b7b2e82f6b8b0d8e5f4c3e6a6&quot; alt=&quot;Old petrol station, before transformation&quot; loading=&quot;lazy&quot;&gt;&lt;/div&gt;
+                &lt;div class=&quot;after-image&quot; id=&quot;after-image&quot;&gt;&lt;img src=&quot;https://images.unsplash.com/photo-1558980664-10e7174d0f6a?q=80&amp;w=1600&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;s=2a3b8a1c0b2d4e5f6a7b8c9d0e1f2a3b&quot; alt=&quot;Modern busy TAQA station after transformation&quot; loading=&quot;lazy&quot;&gt;&lt;/div&gt;
+                &lt;div class=&quot;slider-handle&quot; id=&quot;slider-handle&quot;&gt;&lt;div class=&quot;slider-handle-button&quot; aria-hidden=&quot;true&quot;&gt;⟷&lt;/div&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- STRATEGIC APPROACH --&gt;
+        &lt;section class=&quot;container&quot; id=&quot;strategic&quot;&gt;
+            &lt;div class=&quot;section-intro&quot;&gt;
+                &lt;h2 class=&quot;anim-target&quot; data-lang-en=&quot;Our Strategic Approach&quot; data-lang-ar=&quot;نهجنا الاستراتيجي&quot;&gt;&lt;/h2&gt;
+                &lt;p class=&quot;anim-target&quot; data-lang-en=&quot;Three pillars guide our transformation — insight, design, and operational excellence.&quot; data-lang-ar=&quot;ثلاث ركائز توجه تحولنا — الرؤية، التصميم، والتفوق التشغيلي.&quot;&gt;&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;strategic-grid&quot;&gt;
+                &lt;div class=&quot;strategic-card anim-target&quot;&gt;
+                    &lt;h3 data-lang-en=&quot;Insight &amp; Positioning&quot; data-lang-ar=&quot;الرؤية والموقع&quot;&gt;&lt;/h3&gt;
+                    &lt;p data-lang-en=&quot;Site analytics and customer journeys inform decisions so TAQA stations become convenient, trusted destinations.&quot; data-lang-ar=&quot;تحلل بيانات المواقع ومسارات العملاء تساعدنا على تحويل محطات TAQA إلى وجهات موثوقة ومريحة.&quot;&gt;&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;strategic-card anim-target&quot; style=&quot;transition-delay:.12s&quot;&gt;
+                    &lt;h3 data-lang-en=&quot;Design &amp; Experience&quot; data-lang-ar=&quot;التصميم والتجربة&quot;&gt;&lt;/h3&gt;
+                    &lt;p data-lang-en=&quot;Sustainable architecture, clean layouts, and premium retail make the station both functional and inviting.&quot; data-lang-ar=&quot;تصميم مستدام ومساحات نظيفة وتجزئة مميزة تجعل المحطة عملية وجذابة في آن واحد.&quot;&gt;&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;strategic-card anim-target&quot; style=&quot;transition-delay:.24s&quot;&gt;
+                    &lt;h3 data-lang-en=&quot;Services &amp; Operations&quot; data-lang-ar=&quot;الخدمات والتشغيل&quot;&gt;&lt;/h3&gt;
+                    &lt;p data-lang-en=&quot;Integrated services — from fast fueling to lifestyle retail — drive repeat visits and higher spend.&quot; data-lang-ar=&quot;خدمات متكاملة — من التزويد السريع بالوقود إلى التجزئة الحياتية — تعزز تكرار الزيارة وزيادة الإنفاق.&quot;&gt;&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- BLUEPRINT --&gt;
+        &lt;section class=&quot;container&quot; id=&quot;blueprint&quot;&gt;
+            &lt;div class=&quot;section-intro&quot;&gt;
+                &lt;h2 class=&quot;anim-target&quot; data-lang-en=&quot;The Destination Blueprint&quot; data-lang-ar=&quot;مخطط الوجهة المتكاملة&quot;&gt;&lt;/h2&gt;
+                &lt;p class=&quot;anim-target&quot; data-lang-en=&quot;Key building blocks that make TAQA stations a new kind of destination.&quot; data-lang-ar=&quot;العناصر الأساسية التي تجعل محطات TAQA نوعًا جديدًا من الوجهات.&quot;&gt;&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;dl class=&quot;blueprint-list&quot;&gt;
+                &lt;div class=&quot;blueprint-item anim-target&quot;&gt;
+                    &lt;dt data-lang-en=&quot;TAQA Café&quot; data-lang-ar=&quot;مقهى TAQA&quot;&gt;TAQA Café&lt;/dt&gt;
+                    &lt;dd class=&quot;typing-target&quot; data-lang-en=&quot;A premium coffee experience — crafted blends, fresh bakery, and a place to pause on the journey.&quot; data-lang-ar=&quot;تجربة قهوة مميزة — خلطات مصممة ومعجنات طازجة ومكان للراحة أثناء الرحلة.&quot;&gt;&lt;/dd&gt;
+                &lt;/div&gt;
+
+                &lt;div class=&quot;blueprint-item anim-target&quot;&gt;
+                    &lt;dt data-lang-en=&quot;Smart Retail&quot; data-lang-ar=&quot;تجزئة ذكية&quot;&gt;Smart Retail&lt;/dt&gt;
+                    &lt;dd class=&quot;typing-target&quot; data-lang-en=&quot;Curated convenience — essentials, fresh food, and smart-shelf tech for quick pick-ups.&quot; data-lang-ar=&quot;تجزئة منسقة — مستلزمات أساسية وطعام طازج وتقنيات رفوف ذكية لتسوق سريع.&quot;&gt;&lt;/dd&gt;
+                &lt;/div&gt;
+
+                &lt;div class=&quot;blueprint-item anim-target&quot;&gt;
+                    &lt;dt data-lang-en=&quot;Digital &amp; Loyalty&quot; data-lang-ar=&quot;الرقمي والولاء&quot;&gt;Digital &amp; Loyalty&lt;/dt&gt;
+                    &lt;dd class=&quot;typing-target&quot; data-lang-en=&quot;Seamless payments, loyalty rewards, and apps that remember customer preferences.&quot; data-lang-ar=&quot;دفع سلس، مكافآت ولاء، وتطبيقات تتذكر تفضيلات العملاء.&quot;&gt;&lt;/dd&gt;
+                &lt;/div&gt;
+            &lt;/dl&gt;
+        &lt;/section&gt;
+
+        &lt;!-- VISUAL GALLERY --&gt;
+        &lt;section class=&quot;container&quot; id=&quot;gallery&quot;&gt;
+            &lt;div class=&quot;section-intro&quot;&gt;
+                &lt;h2 class=&quot;anim-target&quot; data-lang-en=&quot;A Glimpse into the Future&quot; data-lang-ar=&quot;لمحة عن المستقبل&quot;&gt;&lt;/h2&gt;
+                &lt;p class=&quot;anim-target&quot; data-lang-en=&quot;Selected visuals showing branded interiors, community moments and modern station design.&quot; data-lang-ar=&quot;صور مختارة تعرض داخلية العلامة التجارية ولحظات المجتمع وتصميم المحطات الحديثة.&quot;&gt;&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;slideshow-container anim-target&quot; aria-live=&quot;polite&quot;&gt;
+                &lt;img src=&quot;https://images.unsplash.com/photo-1558980664-10e7174d0f6a?q=80&amp;w=1600&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;s=2a3b8a1c0b2d4e5f6a7b8c9d0e1f2a3b&quot; class=&quot;slide active&quot; alt=&quot;Modern TAQA station exterior&quot;&gt;
+                &lt;img src=&quot;https://images.unsplash.com/photo-1529042410759-befb1204b468?q=80&amp;w=1600&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;s=7c8d0a1b7f9d4c3b2e1f0a9c8b7d6e5f&quot; class=&quot;slide&quot; alt=&quot;TAQA Café interior&quot;&gt;
+                &lt;img src=&quot;https://images.unsplash.com/photo-1542736667-069246bdbc97?q=80&amp;w=1600&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;s=3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d&quot; class=&quot;slide&quot; alt=&quot;Retail and convenience area&quot;&gt;
+                &lt;div class=&quot;slideshow-nav&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- STRATEGIC MARKETING PROPOSAL &amp; SEQUENTIAL ITEMS --&gt;
+        &lt;section class=&quot;container&quot; id=&quot;activation&quot;&gt;
+            &lt;div class=&quot;section-intro&quot;&gt;
+                &lt;h2 class=&quot;anim-target&quot; data-lang-en=&quot;Strategic Marketing Proposal&quot; data-lang-ar=&quot;مقترح التسويق الاستراتيجي&quot;&gt;&lt;/h2&gt;
+                &lt;p class=&quot;anim-target&quot; data-lang-en=&quot;Creating oil &amp; gas customer loyalty through a focused B2B program — aligned with B2C to grow oil revenue.&quot; data-lang-ar=&quot;بناء ولاء عملاء قطاع النفط والغاز من خلال برنامج أعمال (B2B) مركز — متوافق مع B2C لزيادة إيرادات الزيوت.&quot;&gt;&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;!-- Animated sequence (Audit &gt; Remodel &gt; Launch &gt; Roadshow &gt; Digital PR) --&gt;
+            &lt;div class=&quot;strategic-grid&quot; style=&quot;margin-top:1rem&quot;&gt;
+                &lt;!-- We'll keep short cards that animate in sequence --&gt;
+                &lt;div class=&quot;strategic-card anim-target&quot; style=&quot;transition-delay:.0s&quot;&gt;
+                    &lt;h3 data-lang-en=&quot;AUDIT — Mystery Shopper&quot; data-lang-ar=&quot;التدقيق — مشتري سري&quot;&gt;&lt;/h3&gt;
+                    &lt;p class=&quot;typing-target&quot; data-lang-en=&quot;A process to evaluate operations and service through objective assessments and covert visits.&quot; data-lang-ar=&quot;عملية لتقييم العمليات والخدمة من خلال تقييمات موضوعية وزيارات مخفية.&quot;&gt;&lt;/p&gt;
+                &lt;/div&gt;
+
+                &lt;div class=&quot;strategic-card anim-target&quot; style=&quot;transition-delay:.12s&quot;&gt;
+                    &lt;h3 data-lang-en=&quot;REMODEL — Customer Experience&quot; data-lang-ar=&quot;إعادة التصميم — تجربة العميل&quot;&gt;&lt;/h3&gt;
+                    &lt;p class=&quot;typing-target&quot; data-lang-en=&quot;A strategic redesign to improve how customers experience TAQA stations.&quot; data-lang-ar=&quot;مبادرة استراتيجية لإعادة تصميم وتحسين كيفية تجربة العملاء لمحطات TAQA.&quot;&gt;&lt;/p&gt;
+                &lt;/div&gt;
+
+                &lt;div class=&quot;strategic-card anim-target&quot; style=&quot;transition-delay:.24s&quot;&gt;
+                    &lt;h3 data-lang-en=&quot;LAUNCH — Outdoor Branding&quot; data-lang-ar=&quot;إطلاق — العلامة الخارجية&quot;&gt;&lt;/h3&gt;
+                    &lt;p class=&quot;typing-target&quot; data-lang-en=&quot;High-impact outdoor branding that announces TAQA’s new look and services.&quot; data-lang-ar=&quot;علامة خارجية ذات تأثير عالي تعلن عن المظهر والخدمات الجديدة لTAQA.&quot;&gt;&lt;/p&gt;
+                &lt;/div&gt;
+
+                &lt;div class=&quot;strategic-card anim-target&quot; style=&quot;transition-delay:.36s&quot;&gt;
+                    &lt;h3 data-lang-en=&quot;CONDUCT — Roadshow Activation&quot; data-lang-ar=&quot;تنفيذ — تفعيل جولات ميدانية&quot;&gt;&lt;/h3&gt;
+                    &lt;p class=&quot;typing-target&quot; data-lang-en=&quot;Mobile activations to directly engage local communities and drive trial.&quot; data-lang-ar=&quot;تفعيلات متنقلة للتفاعل المباشر مع المجتمعات المحلية ودفع التجربة.&quot;&gt;&lt;/p&gt;
+                &lt;/div&gt;
+
+                &lt;div class=&quot;strategic-card anim-target&quot; style=&quot;transition-delay:.48s&quot;&gt;
+                    &lt;h3 data-lang-en=&quot;DIGITAL PR — Roadshow Amplification&quot; data-lang-ar=&quot;علاقات رقمية عامة — تضخيم الجولة&quot;&gt;&lt;/h3&gt;
+                    &lt;p class=&quot;typing-target&quot; data-lang-en=&quot;Social, earned media, and content that amplifies the roadshow experiences.&quot; data-lang-ar=&quot;وسائل التواصل، الإعلام المكتسب والمحتوى الذي يضخم تجارب الجولة.&quot;&gt;&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- ROI Cycle --&gt;
+        &lt;section class=&quot;container&quot;&gt;
+            &lt;div class=&quot;section-intro&quot;&gt;
+                &lt;h2 class=&quot;anim-target&quot; data-lang-en=&quot;Gaining Oil ROI&quot; data-lang-ar=&quot;تحقيق عائد استثمار الزيوت&quot;&gt;&lt;/h2&gt;
+                &lt;p class=&quot;anim-target&quot; data-lang-en=&quot;A cycle of initiatives that convert experience into loyalty and commercial growth.&quot; data-lang-ar=&quot;دورة مبادرات تحول التجربة إلى ولاء ونمو تجاري.&quot;&gt;&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;cycle-wrapper anim-target&quot;&gt;
+                &lt;div class=&quot;cycle-container&quot; id=&quot;roi-cycle&quot;&gt;
+                    &lt;div class=&quot;center-core&quot; data-lang-en=&quot;Gaining Oil ROI&quot; data-lang-ar=&quot;زيادة عائد استثمار الزيوت&quot;&gt;Gaining&lt;br&gt;Oil ROI&lt;/div&gt;
+                    &lt;!-- steps dynamically generated by script --&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- GEO-LOCATION MARKETING --&gt;
+        &lt;section class=&quot;container&quot; id=&quot;geo&quot;&gt;
+            &lt;div class=&quot;section-intro&quot;&gt;
+                &lt;h2 class=&quot;anim-target&quot; data-lang-en=&quot;Geo-location Marketing&quot; data-lang-ar=&quot;التسويق عبر المواقع الجغرافية&quot;&gt;&lt;/h2&gt;
+                &lt;p class=&quot;anim-target&quot; data-lang-en=&quot;Targeted on-site campaigns that turn local reach into measurable traffic.&quot; data-lang-ar=&quot;حملات ميدانية مستهدفة تحوّل الوصول المحلي إلى حركة قابلة للقياس.&quot;&gt;&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;geo-list anim-target&quot;&gt;
+                &lt;div&gt;
+                    &lt;dt data-lang-en=&quot;Objective:&quot; data-lang-ar=&quot;الهدف:&quot;&gt;Objective:&lt;/dt&gt;
+                    &lt;dd data-lang-en=&quot;Drive customer traffic and promote TAQA oil products.&quot; data-lang-ar=&quot;زيادة حركة العملاء والترويج لمنتجات زيوت TAQA.&quot;&gt;Drive customer traffic and promote TAQA oil products.&lt;/dd&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;dt data-lang-en=&quot;Execution:&quot; data-lang-ar=&quot;التنفيذ:&quot;&gt;Execution:&lt;/dt&gt;
+                    &lt;dd data-lang-en=&quot;Switch Communications will conduct targeted on-site campaigns and roadshows.&quot; data-lang-ar=&quot;ستقوم Switch Communications بتنفيذ حملات ميدانية مستهدفة وجولات ترويجية.&quot;&gt;Switch Communications will conduct targeted on-site campaigns and roadshows.&lt;/dd&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;dt data-lang-en=&quot;Location:&quot; data-lang-ar=&quot;الموقع:&quot;&gt;Location:&lt;/dt&gt;
+                    &lt;dd data-lang-en=&quot;TAQA Energy gas stations.&quot; data-lang-ar=&quot;محطات TAQA للطاقة.&quot;&gt;TAQA Energy gas stations.&lt;/dd&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;dt data-lang-en=&quot;Method:&quot; data-lang-ar=&quot;الطريقة:&quot;&gt;Method:&lt;/dt&gt;
+                    &lt;dd data-lang-en=&quot;Giveaways, sampling, and direct customer engagement across station roadshow activations.&quot; data-lang-ar=&quot;توزيع هدايا وتجارب عينات والتفاعل المباشر مع العملاء عبر تفعيلات الجولات بالمحطات.&quot;&gt;Giveaways, sampling, and direct customer engagement across station roadshow activations.&lt;/dd&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- B2B Cycle --&gt;
+        &lt;section class=&quot;container&quot;&gt;
+            &lt;div class=&quot;section-intro&quot;&gt;
+                &lt;h2 class=&quot;anim-target&quot; data-lang-en=&quot;Ola Energy: Building Strategic Partnerships for Growth&quot; data-lang-ar=&quot;أولا إنرجي: بناء شراكات استراتيجية للنمو&quot;&gt;Ola Energy: Building Strategic Partnerships for Growth&lt;/h2&gt;
+                &lt;p class=&quot;anim-target&quot; data-lang-en=&quot;(B2B cycle complements the B2C activations and channels corporate growth.)&quot; data-lang-ar=&quot;(دورة B2B تكمل تفعيلات B2C وتوجه النمو المؤسسي.)&quot;&gt;&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;cycle-wrapper anim-target&quot;&gt;
+                &lt;div class=&quot;cycle-container&quot; id=&quot;b2b-cycle&quot;&gt;
+                    &lt;div class=&quot;center-core&quot; data-lang-en=&quot;Loyalty &amp; Remodeling&quot; data-lang-ar=&quot;الولاء وإعادة التصميم&quot;&gt;Loyalty &amp;&lt;br&gt;Remodeling&lt;/div&gt;
+                    &lt;!-- steps generated by script --&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- PARTNERSHIP &amp; FAQ (Accordion) --&gt;
+        &lt;section class=&quot;container&quot; id=&quot;faq&quot;&gt;
+            &lt;div class=&quot;section-intro&quot;&gt;
+                &lt;h2 class=&quot;anim-target&quot; data-lang-en=&quot;Partnership &amp; Investment&quot; data-lang-ar=&quot;الشراكة والاستثمار&quot;&gt;&lt;/h2&gt;
+                &lt;p class=&quot;anim-target&quot; data-lang-en=&quot;Interested in joining the transformation? Here’s how we make it work.&quot; data-lang-ar=&quot;هل ترغب في الانضمام إلى التحول؟ إليك كيف نحقق ذلك.&quot;&gt;&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;accordion&quot;&gt;
+                &lt;div class=&quot;accordion-item anim-target&quot;&gt;
+                    &lt;button class=&quot;accordion-trigger&quot;&gt;
+                        &lt;h3 data-lang-en=&quot;What is the investment model?&quot; data-lang-ar=&quot;ما هو نموذج الاستثمار؟&quot;&gt;What is the investment model?&lt;/h3&gt;
+                    &lt;/button&gt;
+                    &lt;div class=&quot;accordion-content&quot;&gt;&lt;div class=&quot;content-inner&quot;&gt;
+                        &lt;p data-lang-en=&quot;Flexible partnership models including franchise, JV and managed operations. We tailor to your financial and operational needs.&quot; data-lang-ar=&quot;نماذج شراكة مرنة تشمل الامتياز، المشاريع المشتركة وإدارة العمليات. نخصّص الحلول لاحتياجاتك المالية والتشغيلية.&quot;&gt;Flexible partnership models including franchise, JV and managed operations. We tailor to your financial and operational needs.&lt;/p&gt;
+                    &lt;/div&gt;&lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class=&quot;accordion-item anim-target&quot;&gt;
+                    &lt;button class=&quot;accordion-trigger&quot;&gt;
+                        &lt;h3 data-lang-en=&quot;What support do partners receive?&quot; data-lang-ar=&quot;ما الدعم الذي يتلقاه الشركاء؟&quot;&gt;What support do partners receive?&lt;/h3&gt;
+                    &lt;/button&gt;
+                    &lt;div class=&quot;accordion-content&quot;&gt;&lt;div class=&quot;content-inner&quot;&gt;
+                        &lt;p data-lang-en=&quot;Full support: site selection, design, operations training and marketing launches.&quot; data-lang-ar=&quot;دعم كامل: اختيار الموقع، التصميم، التدريب التشغيلي وإطلاق الحملات التسويقية.&quot;&gt;Full support: site selection, design, operations training and marketing launches.&lt;/p&gt;
+                        &lt;ol&gt;
+                            &lt;li data-lang-en=&quot;Site selection and analysis&quot; data-lang-ar=&quot;اختيار الموقع وتحليله&quot;&gt;Site selection and analysis&lt;/li&gt;
+                            &lt;li data-lang-en=&quot;Architectural design and branding&quot; data-lang-ar=&quot;التصميم المعماري والعلامة التجارية&quot;&gt;Architectural design and branding&lt;/li&gt;
+                            &lt;li data-lang-en=&quot;Operational training and staff development&quot; data-lang-ar=&quot;التدريب التشغيلي وتطوير الموظفين&quot;&gt;Operational training and staff development&lt;/li&gt;
+                            &lt;li data-lang-en=&quot;Marketing and promotional launch campaigns&quot; data-lang-ar=&quot;حملات التسويق والإطلاق الترويجية&quot;&gt;Marketing and promotional launch campaigns&lt;/li&gt;
+                        &lt;/ol&gt;
+                    &lt;/div&gt;&lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class=&quot;accordion-item anim-target&quot;&gt;
+                    &lt;button class=&quot;accordion-trigger&quot;&gt;
+                        &lt;h3 data-lang-en=&quot;How long does the transformation take?&quot; data-lang-ar=&quot;كم يستغرق التحول؟&quot;&gt;How long does the transformation take?&lt;/h3&gt;
+                    &lt;/button&gt;
+                    &lt;div class=&quot;accordion-content&quot;&gt;&lt;div class=&quot;content-inner&quot;&gt;
+                        &lt;p data-lang-en=&quot;Typical timelines vary; an average transformation runs between 6–12 months from design to opening.&quot; data-lang-ar=&quot;تختلف الجداول الزمنية؛ المشروع المتوسط يستغرق عادة من 6 إلى 12 شهرًا من التصميم إلى الافتتاح.&quot;&gt;Typical timelines vary; an average transformation runs between 6–12 months from design to opening.&lt;/p&gt;
+                    &lt;/div&gt;&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- SWITCH COMMUNICATIONS (Compact interactive section) --&gt;
+        &lt;section class=&quot;container&quot; id=&quot;switch&quot;&gt;
+            &lt;div class=&quot;section-intro&quot;&gt;
+                &lt;h2 class=&quot;anim-target&quot; data-lang-en=&quot;About Switch Communications&quot; data-lang-ar=&quot;عن Switch Communications&quot;&gt;&lt;/h2&gt;
+                &lt;p class=&quot;anim-target&quot; data-lang-en=&quot;A compact overview — click to expand Who we are and What we do.&quot; data-lang-ar=&quot;نظرة موجزة — انقر لتوسيع من نحن وما نقدمه.&quot;&gt;&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;accordion&quot;&gt;
+                &lt;div class=&quot;accordion-item anim-target&quot;&gt;
+                    &lt;button class=&quot;accordion-trigger&quot;&gt;
+                        &lt;h3 data-lang-en=&quot;Who we are...&quot; data-lang-ar=&quot;من نحن...&quot;&gt;Who we are...&lt;/h3&gt;
+                    &lt;/button&gt;
+                    &lt;div class=&quot;accordion-content&quot;&gt;
+                        &lt;div class=&quot;content-inner&quot;&gt;
+                            &lt;p data-lang-en=&quot;Switch Advertising, part of Switch Communications Group, is an agency with 30+ years of 360° marketing experience across Cairo, Texas and Dubai. We craft integrated campaigns, activations, and brand experiences.&quot; data-lang-ar=&quot;Switch Advertising، جزء من مجموعة Switch Communications، وكالة لديها أكثر من 30 عامًا من الخبرة في التسويق الشامل عبر القاهرة وتكساس ودبي. نحن نصمم حملات متكاملة وتفعيلات وتجارب علامة تجارية.&quot;&gt;Switch Advertising, part of Switch Communications Group, is an agency with 30+ years of 360° marketing experience across Cairo, Texas and Dubai. We craft integrated campaigns, activations, and brand experiences.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class=&quot;accordion-item anim-target&quot;&gt;
+                    &lt;button class=&quot;accordion-trigger&quot;&gt;
+                        &lt;h3 data-lang-en=&quot;What we do...&quot; data-lang-ar=&quot;ما الذي نقدمه...&quot;&gt;What we do...&lt;/h3&gt;
+                    &lt;/button&gt;
+                    &lt;div class=&quot;accordion-content&quot;&gt;
+                        &lt;div class=&quot;content-inner&quot;&gt;
+                            &lt;p data-lang-en=&quot;Integrated Brand Experiences: strategy, creative, in-store activations, events, digital and media. We marry creative excellence with operational delivery to drive measurable business outcomes.&quot; data-lang-ar=&quot;تجارب علامة متكاملة: استراتيجية، إبداع، تفعيلات داخل المتاجر، أحداث، رقمي ووسائط. نجمع بين الإبداع والتنفيذ لقيادة نتائج تجارية قابلة للقياس.&quot;&gt;Integrated Brand Experiences: strategy, creative, in-store activations, events, digital and media. We marry creative excellence with operational delivery to drive measurable business outcomes.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;!-- Footer --&gt;
+        &lt;footer class=&quot;footer&quot;&gt;
+            &lt;div class=&quot;container&quot;&gt;
+                &lt;p data-lang-en=&quot;A Presentation by Switch Communications&quot; data-lang-ar=&quot;عرض تقديمي من Switch Communications&quot;&gt;A Presentation by Switch Communications&lt;/p&gt;
+                &lt;img src=&quot;https://ik.imagekit.io/weo7pcw8v/We-O%20Logo%20w.png?updatedAt=1754672619934&quot; alt=&quot;Switch Communications / WE-O Group&quot; style=&quot;height:48px;opacity:.9&quot;&gt;
+            &lt;/div&gt;
+        &lt;/footer&gt;
+    &lt;/main&gt;
+
+    &lt;script&gt;
+        // ---------- Utility &amp; Init ----------
+        const body = document.body;
+        const langToggleBtn = document.getElementById('lang-toggle-btn');
+        const translatableElements = document.querySelectorAll('[data-lang-en]');
+        const loadingOverlay = document.getElementById('loading-overlay');
+
+        function updateLanguage(lang){
+            body.setAttribute('data-lang', lang);
+            body.classList.toggle('rtl', lang === 'ar');
+            langToggleBtn.textContent = lang === 'ar' ? 'English' : 'العربية';
+            translatableElements.forEach(el =&gt; {
+                const txt = el.getAttribute(`data-lang-${lang}`);
+                if(txt !== null) el.innerHTML = txt;
+            });
+        }
+        // default language
+        updateLanguage('en');
+
+        langToggleBtn.addEventListener('click', ()=&gt;{
+            const current = body.getAttribute('data-lang') === 'en' ? 'ar' : 'en';
+            updateLanguage(current);
+        });
+
+        // hide loader after load
+        window.addEventListener('load', ()=&gt; {
+            loadingOverlay.classList.add('hidden');
+            setTimeout(()=&gt; loadingOverlay.style.display='none',600);
+        });
+
+        // ---------- Anim on scroll ----------
+        const animTargets = document.querySelectorAll('.anim-target');
+        const observer = new IntersectionObserver((entries, o) =&gt; {
+            entries.forEach(entry =&gt; {
+                if(entry.isIntersecting){
+                    entry.target.classList.add('fade-in');
+                    if(!entry.target.classList.contains('typing-target')){
+                        o.unobserve(entry.target);
+                    }
+                }
+            });
+        },{threshold:0.12});
+        animTargets.forEach(el =&gt; observer.observe(el));
+
+        // ---------- Hero headline split animation ----------
+        (function heroWords(){
+            const hero = document.querySelector('.hero-headline');
+            if(!hero) return;
+            const lang = body.getAttribute('data-lang') || 'en';
+            const words = hero.getAttribute(`data-lang-${lang}`).split(' ');
+            hero.innerHTML = words.map((w,i)=&gt;`&lt;span class=&quot;word&quot; style=&quot;display:inline-block;opacity:0;transform:translateY(30px);transition:all .6s ease ${0.4 + i*0.08}s&quot;&gt;${w}&lt;/span&gt;`).join(' ');
+            setTimeout(()=&gt; document.querySelectorAll('.hero-headline .word').forEach(el=&gt;{el.style.opacity=1;el.style.transform='translateY(0)'}),140);
+        })();
+
+        // ---------- Before &amp; After Slider ----------
+        (function beforeAfter(){
+            const slider = document.getElementById('before-after');
+            if(!slider) return;
+            const handle = document.getElementById('slider-handle');
+            const after = document.getElementById('after-image');
+            let dragging=false;
+            const rect = () =&gt; slider.getBoundingClientRect();
+
+            const start = (e)=&gt;{ dragging=true; e.preventDefault(); }
+            const stop = ()=&gt; dragging=false;
+            const move = (e)=&gt;{
+                if(!dragging) return;
+                const clientX = (e.touches ? e.touches[0].clientX : e.clientX);
+                const r = rect();
+                let pct = ((clientX - r.left)/r.width)*100;
+                pct = Math.max(0,Math.min(100,pct));
+                after.style.width = pct + '%';
+                handle.style.left = pct + '%';
+            };
+
+            handle.addEventListener('mousedown', start);
+            handle.addEventListener('touchstart', start,{passive:true});
+            window.addEventListener('mouseup', stop);
+            window.addEventListener('touchend', stop);
+            window.addEventListener('mousemove', move);
+            window.addEventListener('touchmove', move,{passive:false});
+        })();
+
+        // ---------- Typing effect for .typing-target elements ----------
+        (function typingEffect(){
+            const targets = document.querySelectorAll('.typing-target');
+            const tObserver = new IntersectionObserver((entries,o)=&gt;{
+                entries.forEach(entry=&gt;{
+                    if(entry.isIntersecting){
+                        const el = entry.target;
+                        const lang = body.getAttribute('data-lang') || 'en';
+                        if(el.dataset.typed) { o.unobserve(el); return; }
+                        const txt = el.getAttribute(`data-lang-${lang}`) || '';
+                        el.innerHTML = '&lt;span class=&quot;typing-cursor&quot;&gt;&lt;/span&gt;';
+                        const cursor = el.querySelector('.typing-cursor');
+                        let i=0;
+                        const type = ()=&gt;{
+                            if(i &lt; txt.length){
+                                cursor.insertAdjacentText('beforebegin', txt.charAt(i));
+                                i++;
+                                setTimeout(type, 24);
+                            } else {
+                                cursor.remove();
+                                el.dataset.typed = 'true';
+                            }
+                        };
+                        type();
+                        o.unobserve(el);
+                    }
+                });
+            },{threshold:0.8});
+            targets.forEach(t=&gt; tObserver.observe(t));
+        })();
+
+        // ---------- Slideshow ----------
+        (function slideshow(){
+            const container = document.querySelector('.slideshow-container');
+            if(!container) return;
+            const slides = Array.from(container.querySelectorAll('.slide'));
+            const nav = container.querySelector('.slideshow-nav');
+            let current=0, interval;
+
+            slides.forEach((_,i)=&gt;{
+                const dot = document.createElement('div');
+                dot.className='slideshow-dot';
+                if(i===0) dot.classList.add('active');
+                dot.addEventListener('click', ()=&gt;{ setSlide(i); reset() });
+                nav.appendChild(dot);
+            });
+            const dots = Array.from(nav.children);
+
+            function setSlide(i){
+                slides.forEach(s=&gt; s.classList.remove('active'));
+                dots.forEach(d=&gt; d.classList.remove('active'));
+                slides[i].classList.add('active');
+                dots[i].classList.add('active');
+                current = i;
+            }
+            function next(){ setSlide((current+1) % slides.length) }
+            function reset(){ clearInterval(interval); interval = setInterval(next,5000) }
+            reset();
+        })();
+
+        // ---------- Accordion ----------
+        (function accordion(){
+            const triggers = document.querySelectorAll('.accordion-trigger');
+            triggers.forEach(t=&gt;{
+                t.addEventListener('click', ()=&gt;{
+                    const content = t.nextElementSibling;
+                    const isActive = t.classList.contains('active');
+                    t.classList.toggle('active', !isActive);
+                    if(!isActive){
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                    } else {
+                        content.style.maxHeight = null;
+                    }
+                });
+            });
+        })();
+
+        // ---------- Cycles: ROI and B2B ----------
+        (function cycles(){
+            // ROI cycle
+            const roiSteps = [
+                &quot;Car Manufacturer Loyalty&quot;,
+                &quot;Raising TAQA brand image&quot;,
+                &quot;Changing Customer experience&quot;,
+                &quot;Gas station customer perception&quot;,
+                &quot;Auditing &amp; Mystery shopping program&quot;,
+                &quot;Marketing &amp; branding efforts&quot;,
+                &quot;Consumer word-of-mouth&quot;,
+                &quot;Gas station Traffic&quot;,
+                &quot;Car manufacturers trust&quot;
+            ];
+            const b2bSteps = [
+                &quot;Oil B2B Strategy&quot;,
+                &quot;B2B Events&quot;,
+                &quot;Presenting Changes &amp; New Strategies&quot;,
+                &quot;Governorate Oil Change Outlets&quot;,
+                &quot;B2B Branding Kit&quot;,
+                &quot;Presenting Changes &amp; Strategies&quot;,
+                &quot;Car Manufacturers&quot;
+            ];
+
+            function buildCycle(containerId, steps){
+                const container = document.getElementById(containerId);
+                if(!container) return;
+                const size = container.offsetWidth;
+                const radius = size/2.2;
+                const centerX = size/2, centerY = size/2;
+                steps.forEach((text,i)=&gt;{
+                    const el = document.createElement('div');
+                    el.className = 'cycle-step';
+                    el.innerHTML = `&lt;div style=&quot;font-size:.85rem&quot;&gt;${i+1}. &lt;br&gt;&lt;span style=&quot;font-weight:600;font-size:.78rem&quot;&gt;${text}&lt;/span&gt;&lt;/div&gt;`;
+                    container.appendChild(el);
+                    // position on circle
+                    const angle = (i/steps.length) * Math.PI * 2 - Math.PI/2;
+                    const x = centerX + Math.cos(angle) * radius;
+                    const y = centerY + Math.sin(angle) * radius;
+                    el.style.left = x + 'px';
+                    el.style.top = y + 'px';
+                    // animate appearance in sequence
+                    setTimeout(()=&gt;{ el.style.opacity = 1; el.style.transform='translate(-50%,-50%) scale(1)'; }, 500 + i*220);
+                });
+            }
+
+            // Build ROI and B2B
+            buildCycle('roi-cycle', roiSteps);
+            buildCycle('b2b-cycle', b2bSteps);
+        })();
+
+        // ---------- animate on header scroll ----------
+        (function headerScroll(){
+            const header = document.getElementById('main-header');
+            window.addEventListener('scroll', ()=&gt;{
+                if(window.scrollY &gt; 40) header.style.boxShadow = '0 10px 30px rgba(0,0,0,.6)';
+                else header.style.boxShadow = 'none';
+            });
+        })();
+
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" title="HTML Online Viewer" style="border: none; width: 100%; height: 100%;"></iframe>

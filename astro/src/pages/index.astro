@@ -1,0 +1,151 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			.features {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				gap: 2rem;
+				margin-top: 2rem;
+			}
+			.feature {
+				border-radius: 0.5rem;
+				background-color: white;
+				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+				padding: 1.5rem;
+				transition: transform 0.2s, box-shadow 0.2s;
+			}
+			.feature:hover {
+				transform: translateY(-5px);
+				box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+			}
+			.feature h3 {
+				margin-top: 0;
+				color: #2337ff;
+			}
+			.cta {
+				background-color: #2337ff;
+				color: white;
+				padding: 0.8rem 1.5rem;
+				border-radius: 0.25rem;
+				text-decoration: none;
+				display: inline-block;
+				font-weight: 600;
+				margin-top: 1rem;
+				transition: background-color 0.2s;
+			}
+			.cta:hover {
+				background-color: #1a26a0;
+			}
+			.examples {
+				margin-top: 3rem;
+			}
+			.example-card {
+				border: 1px solid #eaeaea;
+				border-radius: 0.5rem;
+				overflow: hidden;
+				margin-bottom: 2rem;
+			}
+			.example-img {
+				width: 100%;
+				height: 200px;
+				object-fit: cover;
+				border-bottom: 1px solid #eaeaea;
+			}
+			.example-content {
+				padding: 1.5rem;
+			}
+			.example-actions {
+				display: flex;
+				gap: 1rem;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Create Professional Landing Pages Easily</h1>
+			<p>
+				Welcome to the Landing Page Generator, a powerful tool that helps you create beautiful, 
+				responsive landing pages for your business, products, or services without any coding knowledge.
+				Our intuitive interface makes it easy to customize every aspect of your landing page, 
+				from colors and fonts to sections and content.
+			</p>
+			
+			<a href="/landing-generator" class="cta">Get Started Now</a>
+			
+			<div class="features">
+				<div class="feature">
+					<h3>Easy to Use</h3>
+					<p>
+						Our intuitive drag-and-drop interface makes it simple to create professional landing pages
+						in minutes. No coding or design skills required.
+					</p>
+				</div>
+				<div class="feature">
+					<h3>Fully Customizable</h3>
+					<p>
+						Change colors, fonts, images, and content to match your brand identity and create
+						a landing page that truly represents your business.
+					</p>
+				</div>
+				<div class="feature">
+					<h3>Responsive Design</h3>
+					<p>
+						All landing pages are automatically responsive, ensuring they look great on 
+						any device, from desktop computers to mobile phones.
+					</p>
+				</div>
+				<div class="feature">
+					<h3>Multi-language Support</h3>
+					<p>
+						Create landing pages in multiple languages with support for right-to-left scripts
+						like Arabic. Expand your reach to international markets.
+					</p>
+				</div>
+				<div class="feature">
+					<h3>Interactive Elements</h3>
+					<p>
+						Add engaging interactive elements like before/after sliders, animated content,
+						and contact forms to boost user engagement and conversion rates.
+					</p>
+				</div>
+				<div class="feature">
+					<h3>Easy Deployment</h3>
+					<p>
+						Generate configuration files that can be used with our templates for easy
+						deployment on your website or hosting platform.
+					</p>
+				</div>
+			</div>
+			
+			<div class="examples">
+				<h2>How It Works</h2>
+				<ol>
+					<li><strong>Choose a template</strong> - Start with one of our pre-designed templates or create from scratch</li>
+					<li><strong>Customize your design</strong> - Modify colors, fonts, and other styling options to match your brand</li>
+					<li><strong>Add your content</strong> - Fill in text, upload images, and configure sections</li>
+					<li><strong>Preview your page</strong> - See how your landing page looks before publishing</li>
+					<li><strong>Export or deploy</strong> - Generate the configuration file for use with our template system</li>
+				</ol>
+				
+				<h2>Get Started Today</h2>
+				<p>
+					Ready to create your first landing page? Click the button below to access our 
+					landing page generator and start building professional pages in minutes.
+				</p>
+				
+				<a href="/landing-generator" class="cta">Create Your Landing Page</a>
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>

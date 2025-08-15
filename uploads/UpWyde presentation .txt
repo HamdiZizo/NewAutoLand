@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Marketing Partnership | Upwyde Developments</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --brand-blue: #007BFF;
+            --brand-gold: #D4AF37;
+            --dark-bg: #0D1117;
+            --light-bg: #161B22;
+            --border-color: #30363D;
+            --white: #F0F6FC;
+            --text-grey: #8B949E;
+            --font-primary: 'Poppins', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-primary); background-color: var(--dark-bg); color: var(--white); line-height: 1.8; overflow-x: hidden; }
+
+        /* General */
+        .container { max-width: 1100px; margin: 0 auto; padding: 6rem 2rem; }
+        .section { position: relative; overflow: hidden; }
+        .section-intro { text-align: center; max-width: 800px; margin: 0 auto 4rem auto; }
+        h1, h2, h3, h4 { font-weight: 700; margin-bottom: 1rem; }
+        h1 { font-size: clamp(2.8rem, 6vw, 4.5rem); line-height: 1.2; font-weight: 800; }
+        h2 { font-size: clamp(2.2rem, 5vw, 3rem); text-align: center; color: var(--white); }
+        h3 { font-size: 1.5rem; color: var(--brand-blue); }
+        p { color: var(--text-grey); max-width: 650px; margin-bottom: 1rem; }
+        .highlight { color: var(--brand-blue); }
+
+        /* Header */
+        .header { position: fixed; top: 0; left: 0; width: 100%; padding: 1rem 2rem; background: rgba(13, 17, 23, 0.7); backdrop-filter: blur(10px); z-index: 1000; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+        .header img { height: 40px; }
+
+        /* Hero */
+        .hero { min-height: 100vh; display: flex; align-items: center; text-align: center; position: relative; }
+        .hero-background-grid { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(var(--border-color) 1px, transparent 1px), linear-gradient(to right, var(--border-color) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.1; }
+        .hero .sub-headline { font-size: 1.2rem; color: var(--text-grey); margin-top: 1rem; }
+        
+        /* Pillars of Execution */
+        .pillars-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 4rem; }
+        .pillar-card { background: var(--light-bg); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 10px; width: 250px; text-align: center; }
+        .pillar-card .icon { font-size: 2.5rem; color: var(--brand-blue); margin-bottom: 1rem; }
+        .pillar-card h4 { font-size: 1.1rem; color: var(--white); }
+
+        /* Two-Column Card Layout */
+        .two-col-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-top: 3rem; }
+        @media (min-width: 768px) { .two-col-grid { grid-template-columns: 1fr 1fr; } }
+        .info-card { background: var(--light-bg); border: 1px solid var(--border-color); padding: 2rem; border-radius: 10px; }
+        
+        /* Four-Column Feature Grid */
+        .four-col-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        
+        /* Timeline for Phase 1 */
+        .timeline { margin-top: 4rem; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .timeline-item { position: relative; padding: 0 0 2.5rem 2.5rem; border-left: 2px solid var(--border-color); }
+        .timeline-item::before { content: ''; position: absolute; left: -9px; top: 5px; width: 16px; height: 16px; background: var(--dark-bg); border: 3px solid var(--brand-blue); border-radius: 50%; }
+        .timeline-item h4 { color: var(--white); }
+
+        /* Slideshow */
+        .slideshow-container { position: relative; width: 100%; max-width: 900px; margin: auto; aspect-ratio: 16/9; overflow: hidden; border-radius: 10px; border: 1px solid var(--border-color); }
+        .slideshow-container .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.5s ease-in-out; }
+        .slideshow-container .slide.active { opacity: 1; }
+
+        /* KPIs Section */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .kpi-card { text-align: center; background: var(--light-bg); border: 1px solid var(--border-color); padding: 2rem; border-radius: 10px; }
+        .kpi-card .kpi-title { font-size: 1.1rem; color: var(--brand-blue); font-weight: 600; margin-bottom: 0.5rem; }
+        
+        /* Next Steps */
+        .next-steps-grid { display: flex; flex-direction: column; max-width: 700px; margin: 3rem auto 0; }
+        .step-item { display: flex; align-items: center; padding: 1.5rem; background: var(--light-bg); border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 1rem; }
+        .step-number { font-size: 2rem; font-weight: 800; color: var(--brand-blue); margin-right: 1.5rem; }
+        
+        /* Accordion Section */
+        .accordion-item { border-bottom: 1px solid var(--border-color); }
+        .accordion-trigger { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; cursor: pointer; }
+        .accordion-trigger h3 { margin: 0; color: var(--white); font-size: 1.5rem; }
+        .accordion-trigger::after { content: '+'; font-size: 2.5rem; color: var(--brand-blue); transition: transform 0.3s; }
+        .accordion-trigger.active::after { transform: rotate(45deg); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
+        .accordion-content .content-inner { padding: 1rem 0 2rem 0; }
+        .accordion-content h4 { color: var(--white); font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        .accordion-content ul { list-style: none; }
+        .accordion-content ul li { margin-bottom: 0.5rem; padding-left: 1rem; position: relative; }
+        .accordion-content ul li::before { content: '•'; color: var(--brand-blue); position: absolute; left: -5px; }
+        .cta-contact { margin-top: 2rem; background: var(--light-bg); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--brand-blue); }
+        .cta-contact p { margin: 0; color: var(--white); font-weight: 600; }
+
+        /* Footer */
+        .footer { background: #000; text-align: center; padding: 3rem 2rem; }
+        .footer p { color: var(--text-grey); margin: 0; }
+        .footer .agency-logo { height: 40px; margin-top: 1rem; opacity: 0.7; }
+        
+        .anim-target { opacity: 0; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="https://ik.imagekit.io/1t1juh4ix/Switch%20Communication.png?updatedAt=1755010463710" alt="Switch Communications Logo">
+        <img src="https://ik.imagekit.io/1t1juh4ix/UpWyde%20Logo.png?updatedAt=1755011527717" alt="Upwyde Developments Logo">
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero container">
+            <div class="hero-background-grid"></div>
+            <div>
+                <h1 class="anim-target">Building Beyond Expectations</h1>
+                <p class="sub-headline anim-target">A Strategic Marketing Partnership for Upwyde Developments</p>
+            </div>
+        </section>
+
+        <!-- THE VISION -->
+        <section class="section container" id="vision">
+            <div class="section-intro">
+                <h2 class="anim-target">A Foundation of Excellence</h2>
+                <p class="anim-target">We recognize Upwyde Developments as a leader in Egypt's real estate, built on strategic locations, innovative design, and core values of luxury and sustainability. Our goal is to present a strategic partnership that amplifies this vision and accelerates future growth.</p>
+            </div>
+        </section>
+
+        <!-- THE SOLUTION -->
+        <section class="section" id="solution" style="background-color: var(--light-bg);">
+            <div class="container">
+                <div class="section-intro">
+                    <h2 class="anim-target">A 360° Integrated Marketing Strategy</h2>
+                    <p class="anim-target">To cut through a competitive market, a brand must build a powerful narrative. We propose a partnership that combines your development expertise with our proven 360° marketing solutions, creating a robust lead generation engine and enhancing brand visibility.</p>
+                </div>
+                <div class="pillars-grid">
+                    <div class="pillar-card anim-target"><div class="icon">🎯</div><h4>Performance Advertising</h4></div>
+                    <div class="pillar-card anim-target"><div class="icon">✨</div><h4>Influencer Marketing</h4></div>
+                    <div class="pillar-card anim-target"><div class="icon">💻</div><h4>Tech, Content & UX</h4></div>
+                    <div class="pillar-card anim-target"><div class="icon">🎉</div><h4>Experiential & PR</h4></div>
+                    <div class="pillar-card anim-target"><div class="icon">🤝</div><h4>Strategic Offline</h4></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHASE 1: INTELLIGENCE -->
+        <section class="section container" id="phase1">
+            <div class="section-intro"><h2 class="anim-target">Phase 1: A Foundation of Intelligence</h2><p class="anim-target">Before launching, we ground our strategy in data. This foundational phase ensures every action is purposeful and every dollar is optimized.</p></div>
+            <div class="timeline">
+                <div class="timeline-item anim-target"><h4>1. Target Audience Segmentation</h4><p>Developing detailed profiles of commercial investors (ROI-driven) and residential buyers (lifestyle-driven).</p></div>
+                <div class="timeline-item anim-target"><h4>2. Clarifying Project Goals</h4><p>Defining specific targets for lead generation, brand awareness, and sales for key developments.</p></div>
+                <div class="timeline-item anim-target"><h4>3. Competitive Landscape Analysis</h4><p>Analyzing rivals' tactics, pricing, and USPs to identify strategic opportunities.</p></div>
+                <div class="timeline-item anim-target"><h4>4. Performance Audit & Budget Allocation</h4><p>Evaluating current channels to align the budget with prioritized goals for maximum impact.</p></div>
+            </div>
+        </section>
+
+        <!-- STRATEGIC VISUALS -->
+        <section class="section container" id="visuals">
+             <div class="section-intro"><h2 class="anim-target">Strategic Intelligence Visualized</h2></div>
+             <div class="two-col-grid">
+                 <div class="chart-visual anim-target">
+                     <h4>Hypothetical Budget Allocation</h4>
+                     <img src="https://ik.imagekit.io/1t1juh4ix/%20(USPs).png?updatedAt=1755010045760" alt="Bar chart showing a hypothetical quarterly budget allocation split between online and offline marketing." loading="lazy">
+                 </div>
+                 <div class="chart-visual anim-target">
+                     <h4>Competitive Landscape Analysis</h4>
+                     <img src="https://ik.imagekit.io/1t1juh4ix/image.png?updatedAt=1755009916422" alt="Radar chart illustrating a comparative analysis of your company's strengths against two prominent competitors across key real estate attributes." loading="lazy">
+                 </div>
+             </div>
+        </section>
+
+        <!-- CORE STRATEGY 1: MESSAGING -->
+        <section class="section" id="messaging" style="background-color: var(--light-bg);">
+            <div class="container">
+                <div class="section-intro"><h2 class="anim-target">Core Strategy 1: Tailored Messaging for Niche Audiences</h2><p class="anim-target">Marketing and sales efforts must be tailored to the distinct needs and motivations of each client segment.</p></div>
+                <div class="two-col-grid">
+                    <div class="info-card anim-target"><h3>For Commercial Clients</h3><p>Our focus will be on quantifiable ROI, strategic advantages, and long-term stability. Tactics include targeted LinkedIn campaigns, data-rich case studies, proactive PR in business media, and exclusive investor briefings.</p></div>
+                    <div class="info-card anim-target"><h3>For Residential Clients</h3><p>Our focus will be on community feel, lifestyle enhancement, luxury amenities, and quality of life. Tactics include visually-driven campaigns on social media, lifestyle influencer collaborations, and high-quality virtual tours.</p></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- PROJECT SHOWCASE (SLIDESHOW) -->
+        <section class="section container" id="showcase">
+            <div class="section-intro"><h2 class="anim-target">A Portfolio of Excellence</h2></div>
+            <div class="slideshow-container anim-target" id="project-slideshow">
+                <img src="https://ik.imagekit.io/1t1juh4ix/PV1.png?updatedAt=1755011210615" alt="Project Showcase Image 1" class="slide active" loading="lazy">
+                <img src="https://ik.imagekit.io/1t1juh4ix/PV2.png?updatedAt=1755011209500" alt="Project Showcase Image 2" class="slide" loading="lazy">
+                <img src="https://ik.imagekit.io/1t1juh4ix/SK2.png?updatedAt=1755011209454" alt="Project Showcase Image 3" class="slide" loading="lazy">
+                <img src="https://ik.imagekit.io/1t1juh4ix/BH1.png?updatedAt=1755011208836" alt="Project Showcase Image 4" class="slide" loading="lazy">
+                <img src="https://ik.imagekit.io/1t1juh4ix/BH2.png?updatedAt=1755011207845" alt="Project Showcase Image 5" class="slide" loading="lazy">
+                <img src="https://ik.imagekit.io/1t1juh4ix/SK1.png?updatedAt=1755011205004" alt="Project Showcase Image 6" class="slide" loading="lazy">
+            </div>
+        </section>
+
+        <!-- CORE STRATEGY 3: EXPERIENCES -->
+        <section class="section" id="experiences" style="background-color: var(--light-bg);">
+            <div class="container">
+                <div class="section-intro"><h2 class="anim-target">Core Strategy 3: Creating Unforgettable Brand Experiences</h2><p class="anim-target">We will amplify the brand through targeted offline initiatives that create buzz, exclusivity, and lasting impressions.</p></div>
+                <div class="four-col-grid">
+                    <div class="info-card anim-target"><h3>Experiential Marketing</h3><p>Design immersive experiences at exhibitions like Cityscape, featuring interactive models and VR tours.</p></div>
+                    <div class="info-card anim-target"><h3>Public Relations (PR)</h3><p>Execute a proactive PR strategy to announce new projects and corporate milestones, securing positive media coverage.</p></div>
+                    <div class="info-card anim-target"><h3>Exclusive Launch Events</h3><p>Organize high-profile, invitation-only events for new developments to attract high-net-worth individuals.</p></div>
+                    <div class="info-card anim-target"><h3>Strategic Partnerships</h3><p>Forge collaborations with luxury brands and financial institutions that cater to Upwyde's target demographic.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MEASURING SUCCESS -->
+        <section class="section container" id="kpis">
+            <div class="section-intro"><h2 class="anim-target">Measuring Our Success: Data-Driven Optimization</h2><p class="anim-target">Our partnership is built on accountability. Success will be tracked against clearly defined goals, and performance will be constantly analyzed to ensure maximum ROI.</p></div>
+            <div class="kpi-grid">
+                <div class="kpi-card anim-target"><div class="kpi-title">Lead Generation</div><p>Generate a target number of qualified leads for priority projects within a specific timeframe.</p></div>
+                <div class="kpi-card anim-target"><div class="kpi-title">Brand Awareness</div><p>Increase brand mentions, media value, and website traffic by a set percentage.</p></div>
+                <div class="kpi-card anim-target"><div class="kpi-title">Sales Targets</div><p>Directly support the sales team to achieve unit sales goals and deadlines.</p></div>
+            </div>
+        </section>
+
+        <!-- NEXT STEPS -->
+        <section class="section" id="next-steps" style="background-color: var(--light-bg);">
+            <div class="container">
+                <div class="section-intro"><h2 class="anim-target">Next Steps: Building Our Partnership</h2><p class="anim-target">By combining Upwyde's core offerings with our 360° marketing solutions, we will drive brand awareness, generate high-quality leads, and achieve your sales objectives.</p></div>
+                <div class="next-steps-grid">
+                    <div class="step-item anim-target"><div class="step-number">1</div><div><h4>Strategic Workshop</h4><p class="step-text">A deep-dive session to finalize goals, audience profiles, and budget allocation.</p></div></div>
+                    <div class="step-item anim-target"><div class="step-number">2</div><div><h4>Plan Development</h4><p class="step-text">Delivery of a comprehensive, 6-month integrated marketing plan.</p></div></div>
+                    <div class="step-item anim-target"><div class="step-number">3</div><div><h4>Campaign Launch</h4><p class="step-text">Phased rollout of initial online and offline initiatives.</p></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT US (ACCORDION) -->
+        <section class="section container" id="about-us">
+            <div class="section-intro"><h2 class="anim-target">Your Strategic Partner: Switch Communications</h2></div>
+            <div class="accordion">
+                <div class="accordion-item anim-target">
+                    <div class="accordion-trigger"><h3>Who We Are...?</h3></div>
+                    <div class="accordion-content"><div class="content-inner">
+                        <h4>Integrated Marketing Powerhouse Since 1996</h4>
+                        <p>With a legacy of over 29 years, Switch Communications delivers 360° marketing solutions across events, digital, PR, and tech. As part of the Magar Group, with subsidiaries like Egyptian Arts Group & Pulse, we have a robust history of driving real business results for global brands like BMW, Samsung, Nestlé, Vodafone, and Shell.</p>
+                    </div></div>
+                </div>
+                <div class="accordion-item anim-target">
+                    <div class="accordion-trigger"><h3>What We Do...?</h3></div>
+                    <div class="accordion-content"><div class="content-inner">
+                        <h4>From Strategy to Execution – One Agency, Infinite Impact</h4>
+                        <ul>
+                            <li><strong>Experiential Marketing:</strong> High-impact car launches and interactive booths for brands like BMW, Geely, and Shell.</li>
+                            <li><strong>Digital & Growth:</strong> Data-driven performance ads, influencer campaigns, and SEO that deliver results for clients like Fayrouz and Cakes House.</li>
+                            <li><strong>Tech & Content:</strong> Cutting-edge UI/UX, app development, and cinematic production that bring brands to life.</li>
+                        </ul>
+                    </div></div>
+                </div>
+                <div class="accordion-item anim-target">
+                    <div class="accordion-trigger"><h3>Why Partner With Us?</h3></div>
+                    <div class="accordion-content"><div class="content-inner">
+                        <h4>Proven Results, Trusted by Global Brands</h4>
+                        <p>Our strategies are built on a foundation of deep market expertise and a relentless focus on ROI. A prime example is our VR activation for Shell, which generated a 40% increase in qualified leads in just three weeks. Led by the artistic direction of Dr. Elhamy Magar and the strategic insight of ex-Samsung/Pfizer strategist Shady Magar, we deliver partnerships that drive growth.</p>
+                        <div class="cta-contact">
+                            <p>Ready to elevate your brand?<br>
+                            Contact: Dina Al Ashry: 010-19509494 Or Hamdi El Shim: 010-92760051</p>
+                        </div>
+                    </div></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Confidential Proposal for Upwyde Developments</p>
+        <img src="https://ik.imagekit.io/1t1juh4ix/Switch%20Communication.png?updatedAt=1755010463710" alt="Switch Communications Logo" class="agency-logo" loading="lazy">
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // General scroll animation for sections
+            const animatedElements = document.querySelectorAll('.anim-target');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        anime({
+                            targets: entry.target,
+                            translateY: [50, 0],
+                            opacity: [0, 1],
+                            duration: 1200,
+                            easing: 'easeOutExpo',
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            animatedElements.forEach(el => observer.observe(el));
+
+            // Slideshow Logic
+            const slideshow = document.getElementById('project-slideshow');
+            if (slideshow) {
+                const slides = slideshow.querySelectorAll('.slide');
+                if (slides.length > 1) {
+                    let currentSlide = 0;
+                    setInterval(() => {
+                        slides[currentSlide].classList.remove('active');
+                        currentSlide = (currentSlide + 1) % slides.length;
+                        slides[currentSlide].classList.add('active');
+                    }, 3500);
+                }
+            }
+
+            // Accordion Logic
+            const accordionTriggers = document.querySelectorAll('.accordion-trigger');
+            accordionTriggers.forEach(trigger => {
+                trigger.addEventListener('click', () => {
+                    const content = trigger.nextElementSibling;
+                    trigger.classList.toggle('active');
+                    if (trigger.classList.contains('active')) {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                    } else {
+                        content.style.maxHeight = null;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ola Energy: From Fuel Station to a Destination</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #FF6700; /* Ola Orange */
+            --secondary-color: #003366; /* Deep Blue */
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --card-bg: #FFFFFF;
+            --font-en: 'Poppins', sans-serif;
+            --font-ar: 'Cairo', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-en);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: var(--card-bg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+        }
+        .lang-toggle {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: var(--font-ar);
+            font-weight: 700;
+            transition: background 0.3s;
+        }
+        .lang-toggle:hover {
+            background: #E65C00;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: var(--secondary-color);
+            color: white;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* General Section Styling */
+        .section {
+            padding: 60px 0;
+        }
+        .section:nth-child(even) {
+            background-color: var(--card-bg);
+        }
+        .section-intro {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .section-intro h2 {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        .section-intro p {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        /* Grid Layout for Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        /* Before/After Slider Placeholder */
+        .slider-placeholder {
+            width: 100%;
+            height: 400px;
+            background: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #666;
+            text-align: center;
+        }
+
+        /* B2C Cycle List */
+        .cycle-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+        .cycle-list li {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--secondary-color);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            text-align: left;
+            margin-bottom: 40px;
+        }
+        .footer h3 {
+            color: var(--primary-color);
+        }
+        .footer .credits {
+            margin-top: 40px;
+            opacity: 0.8;
+            font-weight: 700;
+        }
+
+        /* RTL (Arabic) Styles */
+        body[data-lang="ar"] {
+            font-family: var(--font-ar);
+        }
+        html[dir="rtl"] {
+            text-align: right;
+        }
+        html[dir="rtl"] .header h1 {
+            text-align: right;
+        }
+        html[dir="rtl"] .footer-grid {
+            text-align: right;
+        }
+    </style>
+</head>
+<body data-lang="en">
+
+    <header class="header">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <h1 data-lang-en="Ola Energy" data-lang-ar="أولا إنرجي">Ola Energy</h1>
+            <button class="lang-toggle" id="lang-toggle-btn">العربية</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1 data-lang-en="From only a fuel station... to a Destination." data-lang-ar="من مجرد محطة وقود... إلى وجهة متكاملة.">From only a fuel station... to a Destination.</h1>
+        </section>
+
+        <section id="transformation" class="section">
+            <div class="container">
+                <div class="section-intro">
+                    <h2 data-lang-en="Visualizing the Transformation" data-lang-ar="تصوّر التحول">Visualizing the Transformation</h2>
+                    <p data-lang-en="We turn functional stops into vibrant lifestyle hubs. Drag the slider to see how." data-lang-ar="نحن نحوّل المحطات الوظيفية إلى مراكز حياة نابضة بالحياة. اسحب المؤشر لترى كيف.">We turn functional stops into vibrant lifestyle hubs. Drag the slider to see how.</p>
+                </div>
+                <div class="slider-placeholder" data-lang-en="[ Interactive Before & After Slider Placeholder ]" data-lang-ar="[ مكان مخصص لمؤشر التمرير التفاعلي قبل وبعد ]">[ Interactive Before & After Slider Placeholder ]</div>
+            </div>
+        </section>
+
+        <section id="strategy" class="section">
+            <div class="container">
+                <div class="section-intro">
+                    <h2 data-lang-en="Our Strategic Approach" data-lang-ar="نهجنا الاستراتيجي">Our Strategic Approach</h2>
+                </div>
+                <div class="grid">
+                    <div class="card">
+                        <h3 data-lang-en="B2B Strategy" data-lang-ar="استراتيجية الشركات">B2B Strategy</h3>
+                        <p data-lang-en="Creating unshakeable oil & gas customer loyalty through high-value corporate partnerships and fleet programs." data-lang-ar="بناء ولاء لا يتزعزع لعملاء النفط والغاز من خلال شراكات الشركات وبرامج الأساطيل عالية القيمة.">Creating unshakeable oil & gas customer loyalty through high-value corporate partnerships and fleet programs.</p>
+                    </div>
+                    <div class="card">
+                        <h3 data-lang-en="B2C Strategy" data-lang-ar="استراتيجية المستهلكين">B2C Strategy</h3>
+                        <p data-lang-en="Transforming the customer experience at every station to directly promote oil revenue and in-store sales." data-lang-ar="تغيير تجربة العميل في كل محطة لتعزيز إيرادات الزيوت والمبيعات داخل المتاجر بشكل مباشر.">Transforming the customer experience at every station to directly promote oil revenue and in-store sales.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="b2c-cycle" class="section">
+            <div class="container">
+                <div class="section-intro">
+                    <h2 data-lang-en="Our B2C Cycle" data-lang-ar="دورة عملنا مع المستهلكين">Our B2C Cycle</h2>
+                </div>
+                <ul class="cycle-list">
+                    <li data-lang-en="The Ola Energy Experience" data-lang-ar="تجربة أولا إنرجي">The Ola Energy Experience</li>
+                    <li data-lang-en="Engaging Customer Journey" data-lang-ar="مسار عميل جذاب">Engaging Customer Journey</li>
+                    <li data-lang-en="In-Store Promotions" data-lang-ar="عروض ترويجية داخل المتجر">In-Store Promotions</li>
+                    <li data-lang-en="Brand Loyalty" data-lang-ar="ولاء العلامة التجارية">Brand Loyalty</li>
+                    <li data-lang-en="Repeat Visits" data-lang-ar="زيارات متكررة">Repeat Visits</li>
+                    <li data-lang-en="High-Value Services" data-lang-ar="خدمات عالية القيمة">High-Value Services</li>
+                    <li data-lang-en="Data-Driven Personalization" data-lang-ar="تخصيص قائم على البيانات">Data-Driven Personalization</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="action-points" class="section">
+            <div class="container">
+                <div class="section-intro">
+                    <h2 data-lang-en="Strategic Action Points" data-lang-ar="نقاط العمل الاستراتيجية">Strategic Action Points</h2>
+                    <p data-lang-en="Here's a breakdown of our key B2B and B2C initiatives." data-lang-ar="هنا تفصيل لمبادراتنا الرئيسية للشركات والمستهلكين.">Here's a breakdown of our key B2B and B2C initiatives.</p>
+                </div>
+                <div class="grid">
+                    <div class="card">
+                        <h3 data-lang-en="B2B Events" data-lang-ar="فعاليات الشركات">B2B Events</h3>
+                        <p data-lang-en="Hosting exclusive events to build stronger relationships with corporate clients and showcase new offerings." data-lang-ar="استضافة فعاليات حصرية لبناء علاقات أقوى مع عملاء الشركات وعرض الخدمات الجديدة.">Hosting exclusive events to build stronger relationships with corporate clients.</p>
+                    </div>
+                    <div class="card">
+                        <h3 data-lang-en="Launching" data-lang-ar="الإطلاق">Launching</h3>
+                        <p data-lang-en="Introducing new products and services with targeted marketing campaigns to maximize impact." data-lang-ar="تقديم منتجات وخدمات جديدة بحملات تسويقية مستهدفة لزيادة التأثير.">Introducing new products and services with targeted marketing campaigns.</p>
+                    </div>
+                    <div class="card">
+                        <h3 data-lang-en="Governorate Oil change Outlet branding" data-lang-ar="علامة تجارية لمنفذ تغيير الزيت في المحافظات">Outlet Branding</h3>
+                        <p data-lang-en="Developing a consistent and attractive brand identity for oil change outlets across all governorates." data-lang-ar="تطوير هوية علامة تجارية متناسقة وجذابة لمنافذ تغيير الزيت في جميع المحافظات.">Developing a consistent brand identity for oil change outlets.</p>
+                    </div>
+                    <div class="card">
+                        <h3 data-lang-en="B2B branding kit" data-lang-ar="مجموعة علامات تجارية للشركات">B2B Branding Kit</h3>
+                        <p data-lang-en="Providing a comprehensive branding kit for corporate partners to ensure brand consistency." data-lang-ar="توفير مجموعة علامات تجارية شاملة لشركاء الشركات لضمان تناسق العلامة التجارية.">Providing a comprehensive branding kit for corporate partners.</p>
+                    </div>
+                    <div class="card">
+                        <h3 data-lang-en="Car manufacturing partnership" data-lang-ar="شراكة مع مصنعي السيارات">Car Partnerships</h3>
+                        <p data-lang-en="Forming strategic partnerships with car manufacturers to offer exclusive services and promotions." data-lang-ar="تكوين شراكات استراتيجية مع مصنعي السيارات لتقديم خدمات وعروض حصرية.">Forming strategic partnerships with car manufacturers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="remodelling" class="section">
+            <div class="container">
+                <div class="section-intro">
+                    <h2 data-lang-en="Ola's Energy Remodelling" data-lang-ar="إعادة تصميم طاقة أولا">Ola's Energy Remodelling</h2>
+                </div>
+                 <ul class="cycle-list">
+                    <li data-lang-en="New services like car maintenance, car wash, and a car care center." data-lang-ar="خدمات جديدة مثل صيانة السيارات، غسيل السيارات، ومركز رعاية السيارات.">New services: car maintenance, car wash, and care center.</li>
+                    <li data-lang-en="Upgraded food and beverage offerings with an improved customer experience." data-lang-ar="عروض مطورة للأطعمة والمشروبات مع تجربة عميل محسنة.">Upgraded food & beverage with improved CX.</li>
+                    <li data-lang-en="A redesigned loyalty program with exclusive rewards and benefits." data-lang-ar="برنامج ولاء معاد تصميمه مع مكافآت ومزايا حصرية.">Redesigned loyalty program with exclusive rewards.</li>
+                    <li data-lang-en="Integration of new technologies for a seamless and connected experience." data-lang-ar="تكامل التقنيات الجديدة لتجربة سلسة ومترابطة.">New tech for a seamless, connected experience.</li>
+                    <li data-lang-en="Focus on creating a welcoming and modern environment for all visitors." data-lang-ar="التركيز على خلق بيئة حديثة ومرحبة لجميع الزوار.">Focus on a welcoming and modern environment.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="action-plan" class="section">
+             <div class="container">
+                <div class="section-intro">
+                    <h2 data-lang-en="Action Plan" data-lang-ar="خطة العمل">Action Plan</h2>
+                     <p data-lang-en="A comprehensive roadmap for brand activation." data-lang-ar="خريطة طريق شاملة لتفعيل العلامة التجارية.">A comprehensive roadmap for brand activation.</p>
+                </div>
+                <div class="grid">
+                     <div class="card"><h3 data-lang-en="Establish Brand Identity" data-lang-ar="تأسيس هوية العلامة التجارية">Establish Brand Identity</h3> <p data-lang-en="Refine and solidify the brand's visual and verbal identity to resonate with the target audience." data-lang-ar="صقل وتوطيد الهوية البصرية واللفظية للعلامة التجارية لتتناسب مع الجمهور المستهدف."></p></div>
+                     <div class="card"><h3 data-lang-en="Digital Presence" data-lang-ar="التواجد الرقمي">Digital Presence</h3> <p data-lang-en="Develop and execute a robust digital marketing strategy across all platforms." data-lang-ar="تطوير وتنفيذ استراتيجية تسويق رقمي قوية عبر جميع المنصات."></p></div>
+                     <div class="card"><h3 data-lang-en="Physical Space Activation" data-lang-ar="تفعيل المساحة الفعلية">Physical Space Activation</h3> <p data-lang-en="Implement in-store and on-site branding elements to enhance the customer experience." data-lang-ar="تطبيق عناصر العلامة التجارية داخل المتجر وفي الموقع لتعزيز تجربة العميل."></p></div>
+                     <div class="card"><h3 data-lang-en="Partnership Development" data-lang-ar="تطوير الشراكات">Partnership Development</h3> <p data-lang-en="Forge strategic partnerships with key players in the automotive and retail sectors." data-lang-ar="إقامة شراكات استراتيجية مع اللاعبين الرئيسيين في قطاعي السيارات والتجزئة."></p></div>
+                     <div class="card"><h3 data-lang-en="Performance Measurement" data-lang-ar="قياس الأداء">Performance Measurement</h3> <p data-lang-en="Set up key performance indicators (KPIs) to track and analyze the effectiveness of all initiatives." data-lang-ar="وضع مؤشرات أداء رئيسية (KPIs) لتتبع وتحليل فعالية جميع المبادرات."></p></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="section-intro">
+                <h2 style="color: white;" data-lang-en="Switch Communications" data-lang-ar="سويتش كوميونيكيشنز">Switch Communications</h2>
+                <p style="color: #ddd;" data-lang-en="A new approach to brand and communication strategies." data-lang-ar="نهج جديد لاستراتيجيات العلامة التجارية والاتصال.">A new approach to brand and communication strategies.</p>
+            </div>
+            <div class="footer-grid">
+                <div>
+                    <h3 data-lang-en="Who We Are...?" data-lang-ar="من نحن...؟">Who We Are...?</h3>
+                    <p data-lang-en="We are a creative agency specializing in crafting unique brand narratives and engaging communication strategies." data-lang-ar="نحن وكالة إبداعية متخصصة في صياغة روايات فريدة للعلامات التجارية واستراتيجيات اتصال جذابة.">We are a creative agency specializing in crafting unique brand narratives and engaging communication strategies.</p>
+                </div>
+                <div>
+                    <h3 data-lang-en="What We Do...?" data-lang-ar="ماذا نفعل...؟">What We Do...?</h3>
+                    <p data-lang-en="Our services include brand strategy, creative campaigns, digital marketing, and public relations. We work closely with our clients to transform their vision into a compelling brand story." data-lang-ar="تشمل خدماتنا استراتيجية العلامة التجارية، الحملات الإبداعية، التسويق الرقمي، والعلاقات العامة. نعمل عن كثب مع عملائنا لتحويل رؤيتهم إلى قصة علامة تجارية مقنعة.">Our services include brand strategy, creative campaigns, digital marketing, and public relations.</p>
+                </div>
+                <div>
+                    <h3 data-lang-en="Why Partner With Us...?" data-lang-ar="لماذا تتعاون معنا...؟">Why Partner With Us...?</h3>
+                    <p data-lang-en="We bring a fresh perspective and innovative solutions to every project. Our team is dedicated to delivering measurable results and creating lasting impact." data-lang-ar="نقدم منظورًا جديدًا وحلولًا مبتكرة لكل مشروع. فريقنا مكرس لتقديم نتائج قابلة للقياس وإحداث تأثير دائم.">We bring a fresh perspective and innovative solutions to every project.</p>
+                </div>
+            </div>
+            <p class="credits" data-lang-en="This Project is created by Switch Communications Agency." data-lang-ar="هذا المشروع من تصميم وكالة سويتش كوميونيكيشنز.">This Project is created by Switch Communications Agency.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const langToggleButton = document.getElementById('lang-toggle-btn');
+            const body = document.body;
+            const html = document.documentElement;
+
+            function updateLanguage(lang) {
+                body.dataset.lang = lang;
+                html.lang = lang;
+                html.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+                document.querySelectorAll('[data-lang-en]').forEach(el => {
+                    const text = el.dataset[`lang-${lang}`];
+                    if (text) {
+                        el.innerText = text;
+                    }
+                });
+
+                if (lang === 'ar') {
+                    langToggleButton.innerText = 'English';
+                } else {
+                    langToggleButton.innerText = 'العربية';
+                }
+            }
+
+            langToggleButton.addEventListener('click', () => {
+                const currentLang = body.dataset.lang === 'en' ? 'ar' : 'en';
+                updateLanguage(currentLang);
+            });
+
+            // Set initial language based on browser preference or default to English
+            const initialLang = navigator.language.startsWith('ar') ? 'ar' : 'en';
+            updateLanguage(initialLang);
+        });
+    </script>
+
+</body>
+</html>
